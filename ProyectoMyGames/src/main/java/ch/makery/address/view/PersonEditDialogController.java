@@ -16,17 +16,15 @@ import ch.makery.address.util.DateUtil;
 public class PersonEditDialogController {
 
     @FXML
-    private TextField firstNameField;
+    private TextField nombreField;
     @FXML
-    private TextField lastNameField;
+    private TextField apellidosField;
     @FXML
-    private TextField streetField;
+    private TextField emailField;
     @FXML
-    private TextField postalCodeField;
+    private TextField passwordField;
     @FXML
-    private TextField cityField;
-    @FXML
-    private TextField birthdayField;
+    private TextField usernameField;
 
 
     private Stage dialogStage;
@@ -58,13 +56,12 @@ public class PersonEditDialogController {
     public void setPerson(Person person) {
         this.person = person;
 
-        firstNameField.setText(person.getFirstName());
-        lastNameField.setText(person.getLastName());
-        streetField.setText(person.getStreet());
-        postalCodeField.setText(Integer.toString(person.getPostalCode()));
-        cityField.setText(person.getCity());
-        birthdayField.setText(DateUtil.format(person.getBirthday()));
-        birthdayField.setPromptText("dd.mm.yyyy");
+        nombreField.setText(person.getNomrbe());
+        apellidosField.setText(person.getApellidos());
+        emailField.setText(person.getEmail());
+        passwordField.setText(person.getPassword());
+        usernameField.setText(person.getUsername());
+
     }
 
     /**
@@ -82,13 +79,13 @@ public class PersonEditDialogController {
     @FXML
     private void handleOk() {
         if (isInputValid()) {
-            person.setFirstName(firstNameField.getText());
-            person.setLastName(lastNameField.getText());
-            person.setStreet(streetField.getText());
-            person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
-            person.setCity(cityField.getText());
-            person.setBirthday(DateUtil.parse(birthdayField.getText()));
+            person.setNombre(nombreField.getText());
+            person.setApellidos(apellidosField.getText());
+            person.setEmail(emailField.getText());
+            person.setPassword(passwordField.getText());
+            person.setUsername(usernameField.getText());
 
+            
             okClicked = true;
             dialogStage.close();
         }
@@ -110,37 +107,20 @@ public class PersonEditDialogController {
     private boolean isInputValid() {
         String errorMessage = "";
 
-        if (firstNameField.getText() == null || firstNameField.getText().length() == 0) {
-            errorMessage += "No valid first name!\n"; 
+        if (nombreField.getText() == null || nombreField.getText().length() == 0) {
+            errorMessage += "Nombre no valido\n"; 
         }
-        if (lastNameField.getText() == null || lastNameField.getText().length() == 0) {
-            errorMessage += "No valid last name!\n"; 
+        if (apellidosField.getText() == null || apellidosField.getText().length() == 0) {
+            errorMessage += "Apellidos no valido\n"; 
         }
-        if (streetField.getText() == null || streetField.getText().length() == 0) {
-            errorMessage += "No valid street!\n"; 
+        if (emailField.getText() == null || emailField.getText().length() == 0) {
+            errorMessage += "Email no valido\n"; 
         }
-
-        if (postalCodeField.getText() == null || postalCodeField.getText().length() == 0) {
-            errorMessage += "No valid postal code!\n"; 
-        } else {
-            // try to parse the postal code into an int.
-            try {
-                Integer.parseInt(postalCodeField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage += "No valid postal code (must be an integer)!\n"; 
-            }
+        if (passwordField.getText() == null || passwordField.getText().length() == 0) {
+            errorMessage += "Password no valido\n"; 
         }
-
-        if (cityField.getText() == null || cityField.getText().length() == 0) {
-            errorMessage += "No valid city!\n"; 
-        }
-
-        if (birthdayField.getText() == null || birthdayField.getText().length() == 0) {
-            errorMessage += "No valid birthday!\n";
-        } else {
-        	if (!DateUtil.validDate(birthdayField.getText())) {
-                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
-            }
+        if (usernameField.getText() == null || usernameField.getText().length() == 0) {
+            errorMessage += "Username no valido\n"; 
         }
 
         if (errorMessage.length() == 0) {

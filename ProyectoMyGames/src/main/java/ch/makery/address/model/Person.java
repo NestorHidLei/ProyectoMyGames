@@ -1,11 +1,5 @@
 package ch.makery.address.model;
 
-import java.time.LocalDate;
-
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -16,18 +10,18 @@ import javafx.beans.property.StringProperty;
  */
 public class Person {
 
-	private final StringProperty firstName;
-	private final StringProperty lastName;
-	private final StringProperty street;
-	private final IntegerProperty postalCode;
-	private final StringProperty city;
-	private final ObjectProperty<LocalDate> birthday;
+	private final StringProperty nombre;
+	private final StringProperty apellidos;
+	private final StringProperty email;
+	private final StringProperty password;
+	private final StringProperty username;
+
 
 	/**
 	 * Default constructor.
 	 */
 	public Person() {
-		this(null, null);
+		this(null, null, null, null, null);
 	}
 	
 	/**
@@ -36,86 +30,72 @@ public class Person {
 	 * @param firstName
 	 * @param lastName
 	 */
-	public Person(String firstName, String lastName) {
-		this.firstName = new SimpleStringProperty(firstName);
-		this.lastName = new SimpleStringProperty(lastName);
-		
-		// Some initial dummy data, just for convenient testing.
-		this.street = new SimpleStringProperty("some street");
-		this.postalCode = new SimpleIntegerProperty(1234);
-		this.city = new SimpleStringProperty("some city");
-		this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.of(1999, 2, 21));
+	public Person(String nombre, String apellidos, String email, String password, String username) {
+		this.nombre = new SimpleStringProperty(nombre);
+		this.apellidos = new SimpleStringProperty(apellidos);
+		this.email = new SimpleStringProperty(email);
+		this.password = new SimpleStringProperty(password);
+		this.username = new SimpleStringProperty(username);
 	}
 	
-	public String getFirstName() {
-		return firstName.get();
+	public String getNomrbe() {
+		return nombre.get();
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName.set(firstName);
+	public void setNombre(String firstName) {
+		this.nombre.set(firstName);
 	}
 	
-	public StringProperty firstNameProperty() {
-		return firstName;
+	public StringProperty nombreProperty() {
+		return nombre;
 	}
 
-	public String getLastName() {
-		return lastName.get();
+	public String getApellidos() {
+		return apellidos.get();
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName.set(lastName);
+	public void setApellidos(String lastName) {
+		this.apellidos.set(lastName);
 	}
 	
-	public StringProperty lastNameProperty() {
-		return lastName;
+	public StringProperty apellidosProperty() {
+		return apellidos;
 	}
 
-	public String getStreet() {
-		return street.get();
+	public String getEmail() {
+		return email.get();
 	}
 
-	public void setStreet(String street) {
-		this.street.set(street);
+	public void setEmail(String lastName) {
+		this.email.set(lastName);
 	}
 	
-	public StringProperty streetProperty() {
-		return street;
-	}
-
-	public int getPostalCode() {
-		return postalCode.get();
-	}
-
-	public void setPostalCode(int postalCode) {
-		this.postalCode.set(postalCode);
+	public StringProperty emailProperty() {
+		return email;
 	}
 	
-	public IntegerProperty postalCodeProperty() {
-		return postalCode;
+	public String getPassword() {
+		return password.get();
 	}
 
-	public String getCity() {
-		return city.get();
-	}
-
-	public void setCity(String city) {
-		this.city.set(city);
+	public void setPassword(String lastName) {
+		this.password.set(lastName);
 	}
 	
-	public StringProperty cityProperty() {
-		return city;
-	}
-
-	public LocalDate getBirthday() {
-		return birthday.get();
-	}
-
-	public void setBirthday(LocalDate birthday) {
-		this.birthday.set(birthday);
+	public StringProperty passwordProperty() {
+		return password;
 	}
 	
-	public ObjectProperty<LocalDate> birthdayProperty() {
-		return birthday;
+	public String getUsername() {
+		return username.get();
 	}
+
+	public void setUsername(String lastName) {
+		this.username.set(lastName);
+	}
+	
+	public StringProperty usernameProperty() {
+		return username;
+	}
+	
 }

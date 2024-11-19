@@ -48,10 +48,10 @@ public class PersonOverviewController {
     @FXML
     private void initialize() {
     	// Initialize the person table with the two columns.
-        firstNameColumn.setCellValueFactory(
-                cellData -> cellData.getValue().firstNameProperty());
-        lastNameColumn.setCellValueFactory(
-                cellData -> cellData.getValue().lastNameProperty());
+//        firstNameColumn.setCellValueFactory(
+//                cellData -> cellData.getValue().firstNameProperty());
+//        lastNameColumn.setCellValueFactory(
+//                cellData -> cellData.getValue().lastNameProperty());
 
         // Clear person details.
         showPersonDetails(null);
@@ -140,12 +140,12 @@ public class PersonOverviewController {
     private void showPersonDetails(Person person) {
         if (person != null) {
             // Fill the labels with info from the person object.
-            firstNameLabel.setText(person.getFirstName());
-            lastNameLabel.setText(person.getLastName());
-            streetLabel.setText(person.getStreet());
-            postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
-            cityLabel.setText(person.getCity());
-            birthdayLabel.setText(DateUtil.format(person.getBirthday()));
+//            firstNameLabel.setText(person.getFirstName());
+//            lastNameLabel.setText(person.getLastName());
+//            streetLabel.setText(person.getStreet());
+//            postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
+//            cityLabel.setText(person.getCity());
+//            birthdayLabel.setText(DateUtil.format(person.getBirthday()));
 
             // TODO: We need a way to convert the birthday into a String! 
             // birthdayLabel.setText(...);

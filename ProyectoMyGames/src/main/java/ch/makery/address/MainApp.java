@@ -26,15 +26,9 @@ public class MainApp extends Application {
 	 */
 	public MainApp() {
 		// Add some sample data
-		personData.add(new Person("Hans", "Muster"));
-		personData.add(new Person("Ruth", "Mueller"));
-		personData.add(new Person("Heinz", "Kurz"));
-		personData.add(new Person("Cornelia", "Meier"));
-		personData.add(new Person("Werner", "Meyer"));
-		personData.add(new Person("Lydia", "Kunz"));
-		personData.add(new Person("Anna", "Best"));
-		personData.add(new Person("Stefan", "Meier"));
-		personData.add(new Person("Martin", "Mueller"));
+		Person person1 = new Person("Sofía", "Ramírez", "sofia.ramirez@example.com", "sofiapass", "sofi123");
+		Person person2 = new Person("Miguel", "García", "miguel.garcia@example.com", "miguelpass", "miguelg");
+		Person person3 = new Person("Laura", "López", "laura.lopez@example.com", "laurapass", "laural");
 	}
   
 	/**
@@ -110,7 +104,7 @@ public class MainApp extends Application {
 	    try {
 	        // Load the fxml file and create a new stage for the popup dialog.
 	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
+	        loader.setLocation(MainApp.class.getResource("view/PersonOverview.fxml"));
 	        AnchorPane page = (AnchorPane) loader.load();
 
 	        // Create the dialog Stage.
