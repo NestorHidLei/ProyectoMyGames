@@ -1,4 +1,4 @@
-package ch.makery.address;
+package aplication;
 
 
 public class Launcher {

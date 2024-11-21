@@ -1,14 +1,14 @@
-package ch.makery.address.view;
+package Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import model.Person;
+import utils.DateUtil;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import ch.makery.address.MainApp;
-import ch.makery.address.model.Person;
-import ch.makery.address.util.DateUtil;
+import aplication.MainApp;
 
 public class PersonOverviewController {
     @FXML
