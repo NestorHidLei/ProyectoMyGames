@@ -1,0 +1,59 @@
+.background {
+    -fx-background-color: linear-gradient(to bottom, #2d2d2d, #ff0000);
+    -fx-padding: 20;
+}
+
+.header {
+    -fx-background-color: #4d4d4d;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.header-label {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.login-label {
+    -fx-text-fill: white;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.input-field {
+    -fx-pref-width: 250;
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-border-color: transparent transparent #ff0000 transparent;
+    -fx-border-width: 2px;
+}
+
+.input-field:focused {
+    -fx-border-color: transparent transparent #ffffff transparent;
+}
+
+.login-button {
+    -fx-background-color: #ff0000;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 250;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.login-button:hover {
+    -fx-background-color: #cc0000;
+}
+
+.help-link {
+    -fx-text-fill: #00aaff;
+    -fx-underline: true;
+}
+
+.help-link:hover {
+    -fx-text-fill: #0088cc;
+}

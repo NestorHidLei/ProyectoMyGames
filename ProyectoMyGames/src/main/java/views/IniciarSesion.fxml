@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" prefWidth="600" prefHeight="400" stylesheets="@InicioSesion.css">
+    <children>
+        <VBox alignment="CENTER" prefWidth="600" prefHeight="400" spacing="20" styleClass="background">
+            <children>
+                <!-- Logo superior -->
+                <HBox alignment="CENTER" styleClass="header">
+                    <children>
+                        <Label text="GAMEDEX" styleClass="header-label"/>
+                        <ImageView fitHeight="40" fitWidth="40" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@logo.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <!-- Formulario de login -->
+                <VBox alignment="CENTER" spacing="10">
+                    <Label text="LOGIN" styleClass="login-label"/>
+                    <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@mascot.png" />
+                        </image>
+                    </ImageView>
+                    <TextField promptText="USERNAME" styleClass="input-field"/>
+                    <PasswordField promptText="PASSWORD" styleClass="input-field"/>
+                    <Button text="Login" styleClass="login-button"/>
+                </VBox>
+                <!-- Links de ayuda -->
+                <VBox alignment="CENTER" spacing="5">
+                    <Hyperlink text="No tengo cuenta" styleClass="help-link"/>
+                    <Hyperlink text="He olvidado mi contraseña" styleClass="help-link"/>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
