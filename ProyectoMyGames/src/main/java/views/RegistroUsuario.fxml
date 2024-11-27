@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -11,12 +10,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400" prefWidth="800" stylesheets="@InicioSesion.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+<AnchorPane prefHeight="400" prefWidth="800.0" stylesheets="@RegistroUsuario.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox alignment="CENTER" prefHeight="400" prefWidth="800.0" spacing="20" styleClass="background">
             <children>
                 <!-- Logo superior -->
-                <HBox alignment="CENTER" prefHeight="101.0" prefWidth="592.0" styleClass="header">
+                <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="122.0" prefWidth="778.0" styleClass="header">
                     <children>
                         <Label styleClass="header-label" text="GAMEDEX" />
                         <ImageView fitHeight="81.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true" styleClass="circular-img">
@@ -26,23 +25,32 @@
                         </ImageView>
                     </children>
                 </HBox>
-                <!-- Formulario de login -->
-                <VBox alignment="CENTER" maxHeight="1080.0" maxWidth="1920.0" spacing="10">
-                    <Label styleClass="login-label" text="LOGIN" />
+                <HBox alignment="CENTER">
+                
                     <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../images/persona1.png" />
                         </image>
                     </ImageView>
+                    <Label styleClass="login-label" text="REGISTRO" />
+                </HBox>
+                
+                
+                <!-- Formulario de login -->
+                <VBox alignment="CENTER" maxHeight="1080.0" maxWidth="1920.0" spacing="10">
+                    
+                    <TextField promptText="NOMBRE" styleClass="input-field" />
+                    <TextField promptText="APELLIDOS" styleClass="input-field" />
+                    <TextField promptText="EMAIL" styleClass="input-field" />
                     <TextField promptText="USERNAME" styleClass="input-field" />
                     <PasswordField promptText="PASSWORD" styleClass="input-field" />
                     
                 </VBox>
-                <!-- Links de ayuda -->
+               <!-- Links de ayuda -->
                 <HBox alignment="CENTER" spacing="5">
-                    <Hyperlink styleClass="help-link" text="No tengo cuenta" />
-                    <Button styleClass="login-button" text="Login" />
-                    <Hyperlink styleClass="help-link" text="He olvidado mi contraseña" />
+                    <Button styleClass="login-button" text="Registrar" />
+                    <Button styleClass="login-button" text="Cancelar" />
+                    
                 </HBox>
             </children>
         </VBox>
