@@ -32,7 +32,7 @@ public class MainApp extends Application {
     public void iniciarSesion() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("/views/IniciarSesion.fxml"));
+            loader.setLocation(MainApp.class.getResource("/views/RegistroUsuario.fxml"));
             AnchorPane iniciarSesion = (AnchorPane) loader.load();
 
             Scene scene = new Scene(iniciarSesion);
