@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400" prefWidth="800" stylesheets="@InicioSesion.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" stylesheets="@InicioSesion.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox alignment="CENTER" prefHeight="400" prefWidth="800.0" spacing="20" styleClass="background">
             <children>
@@ -36,12 +36,12 @@
                     </ImageView>
                     <TextField promptText="USERNAME" styleClass="input-field" />
                     <PasswordField promptText="PASSWORD" styleClass="input-field" />
-                    
+                    <Button styleClass="login-button" text="Login" />
                 </VBox>
                 <!-- Links de ayuda -->
                 <HBox alignment="CENTER" spacing="5">
                     <Hyperlink styleClass="help-link" text="No tengo cuenta" />
-                    <Button styleClass="login-button" text="Login" />
+                    
                     <Hyperlink styleClass="help-link" text="He olvidado mi contraseña" />
                 </HBox>
             </children>
