@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import conectarBD.Conexion;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -38,7 +40,7 @@ public class iniciarSesionControlador {
         loginButton.setOnAction(event -> handleLogin());
         
      // Acción del enlace "No tengo cuenta"
-        registro.setOnAction(event -> abrirRegistroUsuario());
+        registro.setOnAction(event -> abrirRegistroUsuario(event));
 
         // Acción del enlace "He olvidado mi contraseña"
         perdidaContrasena.setOnAction(event -> showInfo("Funcionalidad no implementada", "La funcionalidad para recuperar la contraseña estará disponible próximamente."));
@@ -90,18 +92,20 @@ public class iniciarSesionControlador {
         return isAuthenticated;
     }
 
-    private void abrirRegistroUsuario() {
-        try {
-            // Cargar el archivo RegistroUsuario.fxml
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/RegistroUsuario.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Registro de Usuario");
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo abrir la ventana de registro.");
-        }
+    private void abrirRegistroUsuario(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegistroUsuario.fxml"));
+        Scene scene = null;
+		try {
+			scene = new Scene(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        // Obtener el Stage actual y cambiar la escena
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
     
     private void showAlert(Alert.AlertType alertType, String title, String content) {
