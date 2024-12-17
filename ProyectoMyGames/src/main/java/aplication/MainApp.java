@@ -5,7 +5,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainApp extends Application {
 
@@ -33,9 +36,10 @@ public class MainApp extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/views/IniciarSesion.fxml"));
-            AnchorPane iniciarSesion = (AnchorPane) loader.load();
-
+            Pane iniciarSesion = (Pane) loader.load();
+            
             Scene scene = new Scene(iniciarSesion);
+            primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
