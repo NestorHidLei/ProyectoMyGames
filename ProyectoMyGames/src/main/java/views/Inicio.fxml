@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gamedex.GamedexController">
+	<!-- Barra de Navegación Superior -->
+	<top>
+		<VBox spacing="10" style="-fx-background-color: #2C2B2A; -fx-padding: 10;">
+			<HBox alignment="CENTER">
+				<Label contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-weight: bold;" text="GAMEDEX" />
+				<ImageView depthTest="DISABLE" fitHeight="98.0" fitWidth="117.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+					<Image url="@../images/logo.png" />
+				</ImageView>
+			</HBox>
+			<HBox alignment="CENTER" spacing="10" style="-fx-background-color: #2C2B2A; -fx-padding: 10;">
+				<Button style="-fx-font-size: 14; -fx-text-fill: gold;" text="INICIO" />
+				<Button style="-fx-font-size: 14; -fx-text-fill: #B985E2;" text="BIBLIOTECA" />
+				<Button style="-fx-font-size: 14; -fx-text-fill: #C4AC65;" text="DESEADOS" />
+				<Button style="-fx-font-size: 14; -fx-text-fill: #D64747;" text="CUENTA" />
+			</HBox>
+		</VBox>
+	</top>
+
+	<!-- Contenido Principal -->
+	<center>
+		<VBox spacing="40" style="-fx-background-color: #2C2C2C; -fx-padding: 10;">
+			<HBox alignment="CENTER" spacing="20" style="-fx-background-color: #2C2C2C; -fx-padding: 20;">
+				<!-- Juegos Populares -->
+				<VBox spacing="10">
+					<Label style="-fx-font-size: 18; -fx-text-fill: white;" text="JUEGOS POPULARES" />
+					<HBox spacing="10">
+						<VBox>
+
+							<Label style="-fx-text-fill: white;" text="Black OPS" />
+						</VBox>
+						<VBox>
+
+							<Label style="-fx-text-fill: white;" text="Fortnite" />
+						</VBox>
+					</HBox>
+				</VBox>
+
+				<!-- Juegos Nuevos -->
+				<VBox spacing="10">
+					<Label style="-fx-font-size: 18; -fx-text-fill: white;" text="JUEGOS NUEVOS" />
+					<HBox spacing="10">
+						<VBox>
+
+							<Label style="-fx-text-fill: white;" text="DB SZ" />
+						</VBox>
+						<VBox>
+
+							<Label style="-fx-text-fill: white;" text="FC25" />
+						</VBox>
+					</HBox>
+				</VBox>
+			</HBox>
+
+			<!-- Juegos Gratis -->
+			<VBox alignment="CENTER" spacing="10">
+				<Label alignment="CENTER" style="-fx-font-size: 18; -fx-text-fill: white;" text="JUEGOS GRATIS" />
+				<HBox alignment="CENTER" spacing="10">
+					<VBox>
+
+						<Label style="-fx-text-fill: white;" text="Catán" />
+					</VBox>
+					<VBox>
+
+						<Label style="-fx-text-fill: white;" text="Fortnite" />
+					</VBox>
+				</HBox>
+			</VBox>
+		</VBox>
+	</center>
+</BorderPane>

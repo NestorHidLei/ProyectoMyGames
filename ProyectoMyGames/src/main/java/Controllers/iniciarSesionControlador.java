@@ -34,89 +34,106 @@ public class iniciarSesionControlador {
 
     @FXML
     private Hyperlink perdidaContrasena;
-    
+
     @FXML
     public void initialize() {
-        loginButton.setOnAction(event -> handleLogin());
-        
-     // Acción del enlace "No tengo cuenta"
-        registro.setOnAction(event -> abrirRegistroUsuario(event));
+        // Validar que los elementos FXML estén correctamente enlazados
+        if (loginButton != null) {
+        	loginButton.setOnAction(event -> manejarInicioSesion(event));
+        } else {
+            System.out.println("Error: 'botonIniciarSesion' no está enlazado correctamente en el archivo FXML.");
+        }
 
-        // Acción del enlace "He olvidado mi contraseña"
-        perdidaContrasena.setOnAction(event -> showInfo("Funcionalidad no implementada", "La funcionalidad para recuperar la contraseña estará disponible próximamente."));
-        
+        if (registro != null) {
+            registro.setOnAction(event -> abrirRegistroUsuario(event));
+        }
+
+        if (perdidaContrasena != null) {
+        	perdidaContrasena.setOnAction(event -> mostrarInfo("Funcionalidad no implementada",
+                    "La funcionalidad para recuperar la contraseña estará disponible próximamente."));
+        }
     }
 
-    private void handleLogin() {
-       
-
-        if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty() ) {
-            showAlert(Alert.AlertType.ERROR, "Campos vacíos", "Por favor, introduce tu usuario y contraseña.");
+    private void manejarInicioSesion(ActionEvent event) {
+        if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Campos vacíos", "Por favor, introduce tu usuario y contraseña.");
             return;
         }
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-        if (authenticateUser(username, password)) {
-            showAlert(Alert.AlertType.INFORMATION, "Inicio de sesión exitoso", "¡Bienvenido, " + username + "!");
-            // Aquí puedes redirigir a la siguiente pantalla o realizar otra acción
+        String usuario = usernameField.getText().trim();
+        String contrasena = passwordField.getText().trim();
+        if (autenticarUsuario(usuario, contrasena)) {
+            abrirInicio(event);
         } else {
-            showAlert(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
+            mostrarAlerta(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
         }
     }
 
-    private boolean authenticateUser(String username, String password) {
-        boolean isAuthenticated = false;
-
+    private boolean autenticarUsuario(String usuario, String contrasena) {
+        boolean autenticado = false;
 
         Conexion conexionBD = new Conexion();
         Connection conexion = conexionBD.conectar();
-        
-        String query = "SELECT * FROM Usuario WHERE usuario = ? AND contraseña = ?";
 
-        try ( PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
+        String consulta = "SELECT * FROM Usuario WHERE usuario = ? AND contraseña = ?";
 
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+        try (PreparedStatement preparedStatement = conexion.prepareStatement(consulta)) {
+            preparedStatement.setString(1, usuario);
+            preparedStatement.setString(2, contrasena);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultado = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                isAuthenticated = true;
+            if (resultado.next()) {
+                autenticado = true;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error de conexión", "No se pudo conectar a la base de datos.");
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de conexión", "No se pudo conectar a la base de datos.");
         }
 
-        return isAuthenticated;
+        return autenticado;
     }
 
     private void abrirRegistroUsuario(ActionEvent event) {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegistroUsuario.fxml"));
-        Scene scene = null;
-		try {
-			scene = new Scene(loader.load());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegistroUsuario.fxml"));
+            Scene escena = new Scene(loader.load());
 
-        // Obtener el Stage actual y cambiar la escena
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(escena);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo cargar la vista de registro.");
+        }
     }
-    
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+
+    private void abrirInicio(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Inicio.fxml"));
+            System.out.println("Cargando archivo FXML: " + getClass().getResource("/views/Inicio.fxml")); // Depuración
+            Scene escena = new Scene(loader.load());
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(escena);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo cargar la vista de inicio.");
+        }
     }
-    
-    private void showInfo(String title, String content) {
-        showAlert(Alert.AlertType.INFORMATION, title, content);
+
+    private void mostrarAlerta(Alert.AlertType tipoAlerta, String titulo, String contenido) {
+        Alert alerta = new Alert(tipoAlerta);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+    }
+
+    private void mostrarInfo(String titulo, String contenido) {
+        mostrarAlerta(Alert.AlertType.INFORMATION, titulo, contenido);
     }
 }
+
+
