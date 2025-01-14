@@ -1,20 +1,17 @@
 package model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 /**
  * Model class for a Person.
  *
- * @author Marco Jakob
  */
 public class Person {
 
-	private final StringProperty nombre;
-	private final StringProperty apellidos;
-	private final StringProperty email;
-	private final StringProperty password;
-	private final StringProperty username;
+	private String nombre;
+	private String apellidos;
+	private String email;
+	private String password;
+	private String username;
+	//private List<Juegos> juegosGuardados
 
 
 	/**
@@ -31,70 +28,70 @@ public class Person {
 	 * @param lastName
 	 */
 	public Person(String nombre, String apellidos, String email, String password, String username) {
-		this.nombre = new SimpleStringProperty(nombre);
-		this.apellidos = new SimpleStringProperty(apellidos);
-		this.email = new SimpleStringProperty(email);
-		this.password = new SimpleStringProperty(password);
-		this.username = new SimpleStringProperty(username);
+		this.nombre =  nombre;
+		this.apellidos = apellidos;
+		this.email = email;
+		this.password = password;
+		this.username = username;
 	}
 	
 	public String getNomrbe() {
-		return nombre.get();
+		return nombre;
 	}
 
 	public void setNombre(String firstName) {
-		this.nombre.set(firstName);
+		this.nombre = (firstName);
 	}
 	
-	public StringProperty nombreProperty() {
+	public String nombreProperty() {
 		return nombre;
 	}
 
 	public String getApellidos() {
-		return apellidos.get();
+		return apellidos;
 	}
 
 	public void setApellidos(String lastName) {
-		this.apellidos.set(lastName);
+		this.apellidos = lastName;
 	}
 	
-	public StringProperty apellidosProperty() {
+	public String apellidosProperty() {
 		return apellidos;
 	}
 
 	public String getEmail() {
-		return email.get();
+		return email;
 	}
 
 	public void setEmail(String lastName) {
-		this.email.set(lastName);
+		this.email = lastName;
 	}
 	
-	public StringProperty emailProperty() {
+	public String emailProperty() {
 		return email;
 	}
 	
 	public String getPassword() {
-		return password.get();
+		return password;
 	}
 
 	public void setPassword(String lastName) {
-		this.password.set(lastName);
+		this.password = lastName;
 	}
 	
-	public StringProperty passwordProperty() {
+	public String passwordProperty() {
 		return password;
 	}
 	
 	public String getUsername() {
-		return username.get();
+		return username;
 	}
 
 	public void setUsername(String lastName) {
-		this.username.set(lastName);
+		this.username = lastName;
 	}
 	
-	public StringProperty usernameProperty() {
+	public String usernameProperty() {
 		return username;
 	}
 	
