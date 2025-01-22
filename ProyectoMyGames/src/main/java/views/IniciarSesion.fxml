@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@InicioSesion.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.iniciarSesionControlador">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@InicioSesion.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.iniciarSesionControlador">
     <children>
             <Label layoutX="319.0" layoutY="174.0" styleClass="login-label" text="LOGIN" />
             <ImageView fitHeight="193.0" fitWidth="228.0" layoutX="266.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true">
@@ -18,13 +18,13 @@
                 </image>
             </ImageView>
             <!-- Campo de usuario -->
-            <TextField fx:id="usernameField" layoutX="245.0" layoutY="497.0" prefHeight="47.0" prefWidth="428.0" promptText="USERNAME" styleClass="input-field" />
+            <TextField fx:id="usernameField" layoutX="176.0" layoutY="493.0" prefHeight="47.0" prefWidth="428.0" promptText="USERNAME" styleClass="input-field" />
             <!-- Campo de contraseña -->
-            <PasswordField fx:id="passwordField" layoutX="243.0" layoutY="557.0" prefHeight="47.0" prefWidth="256.0" promptText="PASSWORD" styleClass="input-field" />
+            <PasswordField fx:id="passwordField" layoutX="177.0" layoutY="558.0" prefHeight="47.0" prefWidth="256.0" promptText="PASSWORD" styleClass="input-field" />
             <!-- Botón de inicio de sesión -->
-            <Button fx:id="loginButton" layoutX="257.0" layoutY="739.0" prefHeight="69.0" prefWidth="594.0" styleClass="login-button" text="Login" />
-             <Hyperlink fx:id="registro" layoutX="495.0" layoutY="662.0" styleClass="help-link" text="No tengo cuenta" />
-             <Hyperlink fx:id="perdidaContrasena" layoutX="158.0" layoutY="645.0" prefHeight="57.0" prefWidth="322.0" styleClass="help-link" text="He olvidado mi contraseña" />
+            <Button fx:id="loginButton" layoutX="245.0" layoutY="628.0" prefHeight="40.0" prefWidth="594.0" styleClass="login-button" text="Login" />
+             <Hyperlink fx:id="registro" layoutX="464.0" layoutY="691.0" styleClass="help-link" text="No tengo cuenta" />
+             <Hyperlink fx:id="perdidaContrasena" layoutX="176.0" layoutY="674.0" prefHeight="57.0" prefWidth="322.0" styleClass="help-link" text="He olvidado mi contraseña" />
       <ImageView fitHeight="329.0" fitWidth="371.0" layoutX="1340.0" layoutY="368.0" pickOnBounds="true" preserveRatio="true" styleClass="circular-img">
          <image>
             <Image url="@../images/logo.png" />

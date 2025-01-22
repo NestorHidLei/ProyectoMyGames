@@ -31,12 +31,13 @@
 }
 
 .input-field {
-    -fx-pref-width: 250;
+    -fx-pref-width: 385;
     -fx-background-color: #333333;
     -fx-text-fill: white;
     -fx-prompt-text-fill: #aaaaaa;
     -fx-border-color: transparent transparent #ff0000 transparent;
     -fx-border-width: 2px;
+    -fx-layout-X: 231.0;
 }
 
 .input-field:focused {
@@ -47,7 +48,7 @@
     -fx-background-color: #ff0000;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-pref-width: 250;
+    -fx-pref-width: 170;
     -fx-padding: 10;
     -fx-background-radius: 5;
     -fx-border-radius: 5;

@@ -34,7 +34,7 @@
 }
 
 .input-field {
-    -fx-pref-width: 250;
+    -fx-pref-width: 385;
     -fx-background-color: #333333;
     -fx-text-fill: white;
     -fx-prompt-text-fill: #aaaaaa;

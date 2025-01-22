@@ -43,7 +43,7 @@ public class iniciarSesionControlador {
         registro.setOnAction(event -> abrirRegistroUsuario(event));
 
         // Acción del enlace "He olvidado mi contraseña"
-        perdidaContrasena.setOnAction(event -> showInfo("Funcionalidad no implementada", "La funcionalidad para recuperar la contraseña estará disponible próximamente."));
+        perdidaContrasena.setOnAction(event ->abrirRecuperarPassword(event));
         
     }
 
@@ -71,7 +71,7 @@ public class iniciarSesionControlador {
         ConexionBD conexionBD = new ConexionBD();
         Connection conexion = conexionBD.conectar();
         
-        String query = "SELECT * FROM Usuario WHERE usuario = ? AND contraseña = ?";
+        String query = "SELECT * FROM Usuario WHERE usuario = ? AND password = ?";
 
         try ( PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
 
@@ -94,6 +94,22 @@ public class iniciarSesionControlador {
 
     private void abrirRegistroUsuario(ActionEvent event) {
     	FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegistroUsuario.fxml"));
+        Scene scene = null;
+		try {
+			scene = new Scene(loader.load());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        // Obtener el Stage actual y cambiar la escena
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    private void abrirRecuperarPassword(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RecuperarPassword.fxml"));
         Scene scene = null;
 		try {
 			scene = new Scene(loader.load());
