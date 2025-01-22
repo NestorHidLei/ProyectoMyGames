@@ -68,7 +68,7 @@ public class RecuperarPasswordControlador {
         ConexionBD conexionBD = new ConexionBD();
         Connection conexion = conexionBD.conectar();
 
-        String consultaUsuario = "SELECT email FROM usuario WHERE username = ?";
+        String consultaUsuario = "SELECT email FROM usuario WHERE usuario = ?";
         try (PreparedStatement ps = conexion.prepareStatement(consultaUsuario)) {
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
@@ -84,7 +84,7 @@ public class RecuperarPasswordControlador {
             String nuevaPassword = generarStringAleatorio(8);
 
             // Actualizar la contraseña en la base de datos
-            String actualizarPassword = "UPDATE usuario SET password = ? WHERE username = ?";
+            String actualizarPassword = "UPDATE usuario SET password = ? WHERE usuario = ?";
             try (PreparedStatement psUpdate = conexion.prepareStatement(actualizarPassword)) {
                 psUpdate.setString(1, nuevaPassword);
                 psUpdate.setString(2, username);

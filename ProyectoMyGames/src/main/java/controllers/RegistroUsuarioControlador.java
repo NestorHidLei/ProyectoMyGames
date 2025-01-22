@@ -87,7 +87,7 @@ public class RegistroUsuarioControlador {
         }
 
         // Insertar el nuevo usuario en la base de datos
-        String insertQuery = "INSERT INTO usuario (nombre, apellidos, email, usuario, contraseña) VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO usuario (nombre, apellidos, email, usuario, password) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = conexion.prepareStatement(insertQuery)) {
             preparedStatement.setString(1, nombreField.getText());
             preparedStatement.setString(2, apellidosField.getText());
