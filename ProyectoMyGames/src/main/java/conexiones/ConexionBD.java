@@ -1,10 +1,10 @@
-package conectarBD;
+package conexiones;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Conexion {
+public class ConexionBD {
 
 	private  static final String URL = "jdbc:sqlite:src/resources/bd.db"; // Ruta a tu archivo SQLite
 	public Connection conectar() {

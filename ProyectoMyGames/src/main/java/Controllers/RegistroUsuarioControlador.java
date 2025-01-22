@@ -1,4 +1,4 @@
-package Controllers;
+package controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import conectarBD.Conexion;
+import conexiones.ConexionBD;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -71,7 +71,7 @@ public class RegistroUsuarioControlador {
             return;
         }
 
-        Conexion conexionBD = new Conexion();
+        ConexionBD conexionBD = new ConexionBD();
         Connection conexion = conexionBD.conectar();
 
         // Verificar si el usuario o email ya existe

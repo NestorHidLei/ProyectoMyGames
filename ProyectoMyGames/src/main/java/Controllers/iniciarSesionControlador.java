@@ -1,11 +1,11 @@
-package Controllers;
+package controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import conectarBD.Conexion;
+import conexiones.ConexionBD;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,7 +71,7 @@ public class iniciarSesionControlador {
     private boolean autenticarUsuario(String usuario, String contrasena) {
         boolean autenticado = false;
 
-        Conexion conexionBD = new Conexion();
+        ConexionBD conexionBD = new ConexionBD();
         Connection conexion = conexionBD.conectar();
 
         String consulta = "SELECT * FROM Usuario WHERE usuario = ? AND contraseña = ?";
