@@ -1,54 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
 
-<AnchorPane prefHeight="400" prefWidth="800.0" stylesheets="@RegistroUsuario.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="Controllers.RegistroUsuarioControlador">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@RegistroUsuario.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RegistroUsuarioControlador">
     <children>
-        <VBox alignment="CENTER" prefHeight="400" prefWidth="800.0" spacing="20" styleClass="background">
-            <children>
-                <!-- Logo superior -->
-                <HBox alignment="CENTER" prefHeight="101.0" prefWidth="592.0" styleClass="header">
-                    <children>
-                        <Label styleClass="header-label" text="GAMEDEX" />
-                        <ImageView fitHeight="81.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true" styleClass="circular-img">
-                            <image>
-                                <Image url="@../images/logo.png" />
-                            </image>
-                        </ImageView>
-                    </children>
-                </HBox>
-                <HBox>
-                    <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../images/persona1.png" />
-                        </image>
-                    </ImageView>
-                    <Label styleClass="login-label" text="REGISTRO" />
-                </HBox>
-
-                <!-- Formulario de registro -->
-                <VBox alignment="CENTER" maxHeight="1080.0" maxWidth="1920.0" spacing="10">
-                    <TextField fx:id="nombreField" promptText="NOMBRE" styleClass="input-field" />
-                    <TextField fx:id="apellidosField" promptText="APELLIDOS" styleClass="input-field" />
-                    <TextField fx:id="emailField" promptText="EMAIL" styleClass="input-field" />
-                    <TextField fx:id="usernameField" promptText="USERNAME" styleClass="input-field" />
-                    <PasswordField fx:id="passwordField" promptText="PASSWORD" styleClass="input-field" />
-                </VBox>
-
-                <!-- Botones -->
-                <HBox alignment="CENTER" spacing="5">
-                    <Button fx:id="registrarButton" styleClass="login-button" text="Registrar" />
-                    <Button fx:id="cancelarButton" styleClass="login-button" text="Cancelar" />
-                </HBox>
-            </children>
-        </VBox>
+           <ImageView fitHeight="180.0" fitWidth="207.0" layoutX="337.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../images/persona1.png" />
+               </image>
+           </ImageView>
+           <Label layoutX="354.0" layoutY="190.0" prefHeight="67.0" prefWidth="159.0" styleClass="login-label" text="REGISTRO" />
+           <TextField fx:id="nombreField" layoutX="308.0" layoutY="489.0" promptText="NOMBRE" styleClass="input-field" />
+           <TextField fx:id="apellidosField" layoutX="308.0" layoutY="531.0" promptText="APELLIDOS" styleClass="input-field" />
+           <TextField fx:id="emailField" layoutX="308.0" layoutY="625.0" promptText="EMAIL" styleClass="input-field" />
+           <TextField fx:id="usernameField" layoutX="308.0" layoutY="674.0" promptText="USERNAME" styleClass="input-field" />
+           <PasswordField fx:id="passwordField" layoutX="308.0" layoutY="579.0" promptText="PASSWORD" styleClass="input-field" />
+           <Button fx:id="registrarButton" layoutX="143.0" layoutY="751.0" styleClass="login-button" text="Registrar" />
+           <Button fx:id="cancelarButton" layoutX="490.0" layoutY="751.0" styleClass="login-button" text="Cancelar" />
+      <ImageView fitHeight="329.0" fitWidth="371.0" layoutX="1350.0" layoutY="378.0" pickOnBounds="true" preserveRatio="true" styleClass="circular-img">
+         <image>
+            <Image url="@../images/logo.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>
