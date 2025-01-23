@@ -8,21 +8,21 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@RegistroUsuario.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RegistroUsuarioControlador">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@RegistroUsuario.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RegistroUsuarioControlador">
     <children>
            <ImageView fitHeight="180.0" fitWidth="207.0" layoutX="337.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
                <image>
                    <Image url="@../images/persona1.png" />
                </image>
            </ImageView>
-           <Label layoutX="354.0" layoutY="190.0" prefHeight="67.0" prefWidth="159.0" styleClass="login-label" text="REGISTRO" />
-           <TextField fx:id="nombreField" layoutX="308.0" layoutY="489.0" promptText="NOMBRE" styleClass="input-field" />
-           <TextField fx:id="apellidosField" layoutX="308.0" layoutY="531.0" promptText="APELLIDOS" styleClass="input-field" />
-           <TextField fx:id="emailField" layoutX="308.0" layoutY="625.0" promptText="EMAIL" styleClass="input-field" />
-           <TextField fx:id="usernameField" layoutX="308.0" layoutY="674.0" promptText="USERNAME" styleClass="input-field" />
-           <PasswordField fx:id="passwordField" layoutX="308.0" layoutY="579.0" promptText="PASSWORD" styleClass="input-field" />
-           <Button fx:id="registrarButton" layoutX="143.0" layoutY="751.0" styleClass="login-button" text="Registrar" />
-           <Button fx:id="cancelarButton" layoutX="490.0" layoutY="751.0" styleClass="login-button" text="Cancelar" />
+           <Label layoutX="367.0" layoutY="187.0" prefHeight="67.0" prefWidth="159.0" styleClass="login-label" text="REGISTRO" />
+           <TextField fx:id="nombreField" layoutX="231.0" layoutY="489.0" prefHeight="29.0" prefWidth="327.0" promptText="NOMBRE" styleClass="input-field" />
+           <TextField fx:id="apellidosField" layoutX="231.0" layoutY="528.0" promptText="APELLIDOS" styleClass="input-field" />
+           <TextField fx:id="emailField" layoutX="231.0" layoutY="611.0" promptText="EMAIL" styleClass="input-field" />
+           <TextField fx:id="usernameField" layoutX="231.0" layoutY="658.0" promptText="USERNAME" styleClass="input-field" />
+           <PasswordField fx:id="passwordField" layoutX="231.0" layoutY="569.0" promptText="PASSWORD" styleClass="input-field" />
+           <Button fx:id="registrarButton" layoutX="229.0" layoutY="714.0" prefHeight="37.0" prefWidth="159.0" styleClass="login-button" text="Registrar" />
+           <Button fx:id="cancelarButton" layoutX="446.0" layoutY="714.0" styleClass="login-button" text="Cancelar" />
       <ImageView fitHeight="329.0" fitWidth="371.0" layoutX="1350.0" layoutY="378.0" pickOnBounds="true" preserveRatio="true" styleClass="circular-img">
          <image>
             <Image url="@../images/logo.png" />
