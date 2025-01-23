@@ -1,0 +1,90 @@
+.background {
+    -fx-background-image: url("../images/Menu.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat; 
+    -fx-padding: 20;
+}
+
+.header {
+    -fx-background-color: linear-gradient(to right, #FFFFFF, #000000 ,#DE2512);
+    -fx-padding: 10;
+    -fx-spacing: 500;
+    -fx-alignment: center;
+}
+.header-label {
+    -fx-text-fill: black;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.circular-img {
+    -fx-clip-shape: "M 50 50 m -50, 0 a 50,50 0 1,0 100,0 a 50,50 0 1,0 -100,0"; 
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 10, 0.5, 0, 0); 
+}
+
+.circular-img:hover .imagen {-webkit-transform:scale(1.3);transform:scale(1.3);}
+.circular-img {overflow:hidden;}
+
+.login-label {
+    -fx-text-fill: black;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.input-field {
+    -fx-pref-width: 385;
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-border-color: transparent transparent #ff0000 transparent;
+    -fx-border-width: 2px;
+}
+
+.input-field:focused {
+    -fx-border-color: transparent transparent #ffffff transparent;
+}
+
+.login-button {
+    -fx-background-color: #ff0000;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-pref-width: 250;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.login-button:hover {
+    -fx-background-color: #cc0000;
+}
+
+.juego-card {
+    -fx-background-color: #eeeeee;
+    -fx-padding: 10;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.5, 0, 0);
+}
+.juego-card:hover {
+    -fx-background-color: #dddddd;
+}
+
+.section-title{
+	-fx-text-fill: black;
+
+}
+
+.help-link {
+    -fx-text-fill: #00aaff;
+    -fx-underline: true;
+}
+
+.help-link:hover {
+    -fx-text-fill: #0088cc;
+}
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}

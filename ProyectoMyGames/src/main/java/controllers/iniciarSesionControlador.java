@@ -87,12 +87,21 @@ public class iniciarSesionControlador {
 		String username = usernameField.getText().trim();
 		String password = passwordField.getText().trim();
 
-		// Autentica al usuario
-		if (authenticateUser(username, password)) {
-			showAlert(Alert.AlertType.INFORMATION, "Inicio de sesión exitoso", "¡Bienvenido, " + username + "!");
-		} else {
-			showAlert(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
-		}
+		 if (authenticateUser(username, password)) {
+		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
+		            Scene scene = null;
+		    		try {
+		    			scene = new Scene(loader.load());
+		    		} catch (IOException e) {
+		    			e.printStackTrace();
+		    		}
+
+		            Stage stage = (Stage) loginButton.getScene().getWindow();
+		            stage.setScene(scene);
+		            stage.show();
+		    } else {
+		        showAlert(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
+		    }
 	}
 
 	/**
