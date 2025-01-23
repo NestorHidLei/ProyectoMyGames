@@ -22,20 +22,47 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Controlador para la funcionalidad de recuperación de contraseña.
+ * 
+ * Esta clase permite al usuario recuperar su contraseña mediante un proceso
+ * que incluye la generación de una nueva contraseña aleatoria, su actualización
+ * en la base de datos y el envío de la nueva contraseña por correo electrónico.
+ */
 public class RecuperarPasswordControlador {
 
-    final String remitente = "maperaza2005@gmail.com"; // Cambia a tu correo
-    final String contrasena = "xvmf icpv yyel ijjl"; // Cambia a tu contraseña o app password
+    /**
+     * Correo electrónico del remitente para el envío de correos.
+     */
+    final String remitente = "gamedex.sprt@gmail.com";
 
+    /**
+     * Contraseña o clave de aplicación asociada al correo remitente.
+     */
+    final String contrasena = "wuxq lmcd aqgm kujc";
+
+    /**
+     * Campo de texto para que el usuario introduzca su nombre de usuario.
+     */
     @FXML
     private TextField usernameField;
 
+    /**
+     * Botón para aceptar y proceder con la recuperación de contraseña.
+     */
     @FXML
     private Button aceptarButton;
 
+    /**
+     * Botón para cancelar la acción y volver a la pantalla de inicio de sesión.
+     */
     @FXML
     private Button cancelarButton;
 
+    /**
+     * Inicializa los eventos asociados a los elementos de la interfaz.
+     * Este método se llama automáticamente al cargar la vista FXML.
+     */
     @FXML
     public void initialize() {
         // Configurar acción para el botón "Aceptar"
@@ -57,6 +84,14 @@ public class RecuperarPasswordControlador {
         });
     }
 
+    /**
+     * Recupera la contraseña del usuario generando una nueva, actualizándola en la base de datos
+     * y enviándola al correo electrónico asociado al usuario.
+     * 
+     * @param event El evento asociado al botón "Aceptar".
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     * @throws IOException  Si ocurre un error al cargar la siguiente vista.
+     */
     private void recuperarPassword(ActionEvent event) throws SQLException, IOException {
         String username = usernameField.getText().trim();
 
@@ -107,6 +142,12 @@ public class RecuperarPasswordControlador {
         }
     }
 
+    /**
+     * Envía un correo electrónico con la nueva contraseña generada al destinatario especificado.
+     * 
+     * @param destinatario  El correo electrónico del destinatario.
+     * @param nuevaPassword La nueva contraseña generada.
+     */
     private void enviaCorreo(String destinatario, String nuevaPassword) {
         // Configuración de propiedades para el servidor SMTP
         Properties propiedades = new Properties();
@@ -141,6 +182,13 @@ public class RecuperarPasswordControlador {
         }
     }
 
+    /**
+     * Muestra una alerta con el tipo, título y mensaje especificados.
+     * 
+     * @param tipo    El tipo de alerta (ERROR, INFORMATION, etc.).
+     * @param titulo  El título de la alerta.
+     * @param mensaje El mensaje de la alerta.
+     */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -148,6 +196,12 @@ public class RecuperarPasswordControlador {
         alerta.showAndWait();
     }
 
+    /**
+     * Genera un string aleatorio de la longitud especificada.
+     * 
+     * @param longitud La longitud del string aleatorio.
+     * @return Un string aleatorio generado.
+     */
     public static String generarStringAleatorio(int longitud) {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();
@@ -161,6 +215,12 @@ public class RecuperarPasswordControlador {
         return sb.toString();
     }
 
+    /**
+     * Carga la pantalla de inicio de sesión.
+     * 
+     * @param event El evento asociado al botón "Cancelar".
+     * @throws IOException Si ocurre un error al cargar la vista.
+     */
     private void cargarInicioSesion(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/IniciarSesion.fxml"));
         Scene scene = new Scene(loader.load());

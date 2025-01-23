@@ -19,29 +19,61 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 
+/**
+ * Controlador para la funcionalidad de registro de nuevos usuarios.
+ * 
+ * Esta clase permite a los usuarios registrarse en la aplicación mediante un formulario.
+ * Realiza validaciones básicas, verifica duplicados en la base de datos y registra
+ * al usuario si toda la información es válida.
+ */
 public class RegistroUsuarioControlador {
 
+    /**
+     * Campo de texto para que el usuario introduzca su nombre.
+     */
     @FXML
     private TextField nombreField;
 
+    /**
+     * Campo de texto para que el usuario introduzca sus apellidos.
+     */
     @FXML
     private TextField apellidosField;
 
+    /**
+     * Campo de texto para que el usuario introduzca su correo electrónico.
+     */
     @FXML
     private TextField emailField;
 
+    /**
+     * Campo de contraseña para que el usuario introduzca su contraseña.
+     */
     @FXML
     private PasswordField passwordField;
 
+    /**
+     * Campo de texto para que el usuario introduzca su nombre de usuario.
+     */
     @FXML
     private TextField usernameField;
 
+    /**
+     * Botón para registrar un nuevo usuario.
+     */
     @FXML
     private Button registrarButton;
 
+    /**
+     * Botón para cancelar el registro y volver a la pantalla de inicio de sesión.
+     */
     @FXML
     private Button cancelarButton;
 
+    /**
+     * Inicializa los eventos asociados a los elementos de la interfaz.
+     * Este método se llama automáticamente al cargar la vista FXML.
+     */
     @FXML
     public void initialize() {
         // Configurar acción para el botón "Registrar"
@@ -63,6 +95,13 @@ public class RegistroUsuarioControlador {
         });
     }
 
+    /**
+     * Registra un nuevo usuario en la base de datos.
+     * 
+     * @param event El evento asociado al botón "Registrar".
+     * @throws SQLException Si ocurre un error al interactuar con la base de datos.
+     * @throws IOException  Si ocurre un error al cargar la siguiente vista.
+     */
     private void registrarUsuario(ActionEvent event) throws SQLException, IOException {
         // Validación básica de los campos
         if (nombreField.getText().isEmpty() || apellidosField.getText().isEmpty() || emailField.getText().isEmpty()
@@ -105,6 +144,9 @@ public class RegistroUsuarioControlador {
         }
     }
 
+    /**
+     * Limpia todos los campos del formulario.
+     */
     private void limpiarCampos() {
         nombreField.clear();
         apellidosField.clear();
@@ -113,6 +155,13 @@ public class RegistroUsuarioControlador {
         usernameField.clear();
     }
 
+    /**
+     * Muestra una alerta con el tipo, título y mensaje especificados.
+     * 
+     * @param tipo    El tipo de alerta (ERROR, INFORMATION, etc.).
+     * @param titulo  El título de la alerta.
+     * @param mensaje El mensaje de la alerta.
+     */
     private void mostrarAlerta(AlertType tipo, String titulo, String mensaje) {
         Alert alert = new Alert(tipo);
         alert.setTitle(titulo);
@@ -121,6 +170,12 @@ public class RegistroUsuarioControlador {
         alert.showAndWait();
     }
 
+    /**
+     * Carga la pantalla de inicio de sesión.
+     * 
+     * @param event El evento asociado al botón "Cancelar".
+     * @throws IOException Si ocurre un error al cargar la vista.
+     */
     private void cargarInicioSesion(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/IniciarSesion.fxml"));
         Scene scene = new Scene(loader.load());
@@ -131,5 +186,3 @@ public class RegistroUsuarioControlador {
         stage.show();
     }
 }
-
-

@@ -12,14 +12,6 @@ public class Person {
 	private String password;
 	private String username;
 	//private List<Juegos> juegosGuardados
-
-
-	/**
-	 * Default constructor.
-	 */
-	public Person() {
-		this(null, null, null, null, null);
-	}
 	
 	/**
 	 * Constructor with some initial data.
@@ -34,65 +26,45 @@ public class Person {
 		this.password = password;
 		this.username = username;
 	}
-	
-	public String getNomrbe() {
+
+	public String getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(String firstName) {
-		this.nombre = (firstName);
-	}
-	
-	public String nombreProperty() {
-		return nombre;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public String getApellidos() {
 		return apellidos;
 	}
 
-	public void setApellidos(String lastName) {
-		this.apellidos = lastName;
-	}
-	
-	public String apellidosProperty() {
-		return apellidos;
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String lastName) {
-		this.email = lastName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	
-	public String emailProperty() {
-		return email;
-	}
-	
+
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String lastName) {
-		this.password = lastName;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	
-	public String passwordProperty() {
-		return password;
-	}
-	
+
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String lastName) {
-		this.username = lastName;
-	}
-	
-	public String usernameProperty() {
-		return username;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 }
