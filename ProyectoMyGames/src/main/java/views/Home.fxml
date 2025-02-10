@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@Home.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HomeControlador">
     <children>
+        <!-- Barra de búsqueda -->
+        <HBox alignment="CENTER" spacing="10.0" layoutX="50.0" layoutY="50.0">
+            <TextField fx:id="campoBusqueda" promptText="Buscar juegos..." styleClass="search-field" />
+            <Button fx:id="botonBuscar" text="Buscar" styleClass="search-button" onAction="#buscarJuegos" />
+        </HBox>
+
+        <!-- Contenedor para resultados de búsqueda -->
+        <VBox fx:id="contenedorResultadosBusqueda" alignment="TOP_CENTER" layoutY="120.0" prefWidth="1920.0" spacing="20.0" visible="false">
+            <Label styleClass="section-title" text="RESULTADOS DE BÚSQUEDA" />
+            <ScrollPane fitToHeight="true" hbarPolicy="NEVER" pannable="true" prefHeight="420.0" styleClass="horizontal-scroll" vbarPolicy="NEVER">
+                <content>
+                    <HBox fx:id="contenedorJuegosBusqueda" alignment="CENTER" spacing="30.0" />
+                </content>
+            </ScrollPane>
+        </VBox>
+
         <!-- ScrollPane para el contenido vertical (todas las categorías) -->
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="464.0" pannable="false" prefHeight="616.0" prefWidth="1920.0" styleClass="vertical-scroll" vbarPolicy="ALWAYS">
             <content>

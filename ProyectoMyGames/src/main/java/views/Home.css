@@ -1,8 +1,7 @@
 .background {
     -fx-background-image: url("../images/Menu.png");
     -fx-background-size: cover;
-    -fx-background-repeat: no-repeat; 
-
+    -fx-background-repeat: no-repeat;
 }
 
 .section-title {
@@ -35,4 +34,60 @@
 
 .horizontal-scroll .scroll-bar:horizontal:hover {
     -fx-opacity: 0; /* Sigue oculta incluso al pasar el ratón */
+}
+
+.juegos-container {
+    -fx-padding: 10;
+    -fx-spacing: 20;
+}
+
+.label-juego-nombre {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.label-juego-rating {
+    -fx-text-fill: #ffcc00;
+    -fx-font-size: 16px;
+    -fx-alignment: center;
+}
+
+.juego-box {
+    -fx-background-color: #1e1e1e;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-padding: 15;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.juego-box:hover {
+    -fx-background-color: #2e2e2e;
+    -fx-cursor: hand;
+}
+
+.search-field {
+    -fx-pref-width: 400px;
+    -fx-pref-height: 40px;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10;
+}
+
+.search-button {
+    -fx-pref-width: 100px;
+    -fx-pref-height: 40px;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.search-button:hover {
+    -fx-background-color: #45a049;
 }

@@ -3,11 +3,13 @@ package controllers;
 import java.util.List;
 import conexiones.ConexionAPI;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 
 public class HomeControlador {
 
@@ -24,12 +26,35 @@ public class HomeControlador {
     private HBox contenedorJuegosSingleplayer;
 
     @FXML
+    private TextField campoBusqueda;
+
+    @FXML
+    private VBox contenedorResultadosBusqueda;
+
+    @FXML
+    private HBox contenedorJuegosBusqueda;
+
+    @FXML
     public void initialize() {
         ConexionAPI conexionAPI = new ConexionAPI();
         cargarYMostrarJuegos(conexionAPI.obtenerMejoresRatings(), contenedorJuegosPopulares);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosMasNuevos(), contenedorJuegosNuevos);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosMultiplayer(), contenedorJuegosMultiplayer);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
+    }
+
+    @FXML
+    private void buscarJuegos() {
+        String query = campoBusqueda.getText().trim();
+        if (!query.isEmpty()) {
+            ConexionAPI conexionAPI = new ConexionAPI();
+            List<String[]> resultados = conexionAPI.buscarJuegosPorNombre(query);
+            contenedorJuegosBusqueda.getChildren().clear();
+            cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
+            contenedorResultadosBusqueda.setVisible(true);
+        } else {
+            contenedorResultadosBusqueda.setVisible(false);
+        }
     }
 
     private void cargarYMostrarJuegos(List<String[]> juegos, HBox contenedor) {
@@ -49,7 +74,18 @@ public class HomeControlador {
         portada.setFitWidth(220);
         portada.setFitHeight(220);
         portada.setPreserveRatio(true);
-        portada.setImage(new Image(juego[2]));
+
+        // Verifica si la URL de la imagen es válida
+        String urlImagen = juego[2];
+        if (urlImagen != null && !urlImagen.isEmpty() && urlImagen.startsWith("http")) {
+            try {
+                portada.setImage(new Image(urlImagen));
+            } catch (IllegalArgumentException e) {
+                // Si la URL es inválida, carga una imagen predeterminada
+            }
+        } else {
+            // Si no hay URL, carga una imagen predeterminada
+        }
 
         Label nombre = new Label(juego[1]);
         nombre.getStyleClass().add("label-juego-nombre");
@@ -61,5 +97,3 @@ public class HomeControlador {
         return juegoBox;
     }
 }
-
-

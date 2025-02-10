@@ -41,29 +41,42 @@ public class ConexionAPI {
 	 *         la solicitud.
 	 */
 	public String[] buscarJuegoPorId(String id) {
-		String url = URL_API + "/" + id + "?key=" + CLAVE_API;
-		Request solicitud = new Request.Builder().url(url).build();
+	    String url = URL_API + "/" + id + "?key=" + CLAVE_API;
+	    Request solicitud = new Request.Builder().url(url).build();
 
-		try (Response respuesta = cliente.newCall(solicitud).execute()) {
-			if (respuesta.isSuccessful()) {
-				String datosJson = respuesta.body().string();
-				JsonObject juego = JsonParser.parseString(datosJson).getAsJsonObject();
+	    try (Response respuesta = cliente.newCall(solicitud).execute()) {
+	        if (respuesta.isSuccessful()) {
+	            String datosJson = respuesta.body().string();
+	            JsonObject juego = JsonParser.parseString(datosJson).getAsJsonObject();
 
-				String nombre = juego.get("name").getAsString();
-				String portada = juego.has("background_image") ? juego.get("background_image").getAsString()
-						: "No disponible";
-				String rating = juego.has("rating") ? String.valueOf(juego.get("rating").getAsDouble()) : "0.0";
+	            // Verifica si los campos existen y no son JsonNull
+	            String nombre = juego.has("name") && !juego.get("name").isJsonNull() 
+	                             ? juego.get("name").getAsString() 
+	                             : "Nombre no disponible";
+	            String portada = juego.has("background_image") && !juego.get("background_image").isJsonNull() 
+	                             ? juego.get("background_image").getAsString() 
+	                             : "No disponible";
+	            String rating = juego.has("rating") && !juego.get("rating").isJsonNull() 
+	                             ? String.valueOf(juego.get("rating").getAsDouble()) 
+	                             : "0.0";
 
-				return new String[] { id, nombre, portada, rating };
-			} else {
-				System.err.println("Error en la solicitud: " + respuesta.code());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	            return new String[] { id, nombre, portada, rating };
+	        } else {
+	            System.err.println("Error en la solicitud: " + respuesta.code());
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 
+	
+	public List<String[]> buscarJuegosPorNombre(String nombre) {
+	    String url = URL_API + "?key=" + CLAVE_API + "&search=" + nombre;
+	    return obtenerListaDeJuegos(url);
+	}
+	
+	
 	/**
 	 * Obtiene juegos ordenados por un criterio y devuelve sus detalles.
 	 * 
@@ -95,33 +108,42 @@ public class ConexionAPI {
 	 * @return Lista de información de juegos (id, nombre, portada, rating).
 	 */
 	private List<String[]> obtenerListaDeJuegos(String url) {
-		List<String[]> juegos = new ArrayList<>();
-		Request solicitud = new Request.Builder().url(url).build();
+	    List<String[]> juegos = new ArrayList<>();
+	    Request solicitud = new Request.Builder().url(url).build();
 
-		try (Response respuesta = cliente.newCall(solicitud).execute()) {
-			if (respuesta.isSuccessful()) {
-				String datosJson = respuesta.body().string();
-				JsonObject objetoJson = JsonParser.parseString(datosJson).getAsJsonObject();
-				JsonArray resultados = objetoJson.getAsJsonArray("results");
+	    try (Response respuesta = cliente.newCall(solicitud).execute()) {
+	        if (respuesta.isSuccessful()) {
+	            String datosJson = respuesta.body().string();
+	            JsonObject objetoJson = JsonParser.parseString(datosJson).getAsJsonObject();
+	            JsonArray resultados = objetoJson.getAsJsonArray("results");
 
-				for (int i = 0; i < resultados.size(); i++) {
-					JsonObject juego = resultados.get(i).getAsJsonObject();
+	            // Limitar a 15 juegos
+	            int limite = Math.min(resultados.size(), 15); // Tomar máximo 15 juegos
+	            for (int i = 0; i < limite; i++) {
+	                JsonObject juego = resultados.get(i).getAsJsonObject();
 
-					String id = juego.get("id").getAsString();
-					String nombre = juego.get("name").getAsString();
-					String portada = juego.has("background_image") ? juego.get("background_image").getAsString()
-							: "No disponible";
-					String rating = juego.has("rating") ? String.valueOf(juego.get("rating").getAsDouble()) : "0.0";
+	                String id = juego.has("id") && !juego.get("id").isJsonNull() 
+	                           ? juego.get("id").getAsString() 
+	                           : "ID no disponible";
+	                String nombre = juego.has("name") && !juego.get("name").isJsonNull() 
+	                                 ? juego.get("name").getAsString() 
+	                                 : "Nombre no disponible";
+	                String portada = juego.has("background_image") && !juego.get("background_image").isJsonNull() 
+	                                 ? juego.get("background_image").getAsString() 
+	                                 : "No disponible";
+	                String rating = juego.has("rating") && !juego.get("rating").isJsonNull() 
+	                                 ? String.valueOf(juego.get("rating").getAsDouble()) 
+	                                 : "0.0";
 
-					juegos.add(new String[] { id, nombre, portada, rating });
-				}
-			} else {
-				System.err.println("Error en la solicitud: " + respuesta.code());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return juegos;
+	                juegos.add(new String[] { id, nombre, portada, rating });
+	            }
+	        } else {
+	            System.err.println("Error en la solicitud: " + respuesta.code());
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return juegos;
 	}
 
 	/**
