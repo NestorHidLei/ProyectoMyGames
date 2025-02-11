@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 
 public class HomeControlador {
 
+    private String usuario; // Almacena el usuario autenticado
+
     @FXML
     private HBox contenedorJuegosPopulares;
 
@@ -35,9 +37,11 @@ public class HomeControlador {
 
     @FXML
     private HBox contenedorJuegosBusqueda;
-    
+
     @FXML
     private StackPane juegoBox;
+
+   
 
     @FXML
     public void initialize() {
@@ -46,6 +50,12 @@ public class HomeControlador {
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosMasNuevos(), contenedorJuegosNuevos);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosMultiplayer(), contenedorJuegosMultiplayer);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
+    }
+
+    // Método para recibir el usuario autenticado
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+        
     }
 
     @FXML

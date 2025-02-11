@@ -32,6 +32,9 @@ public class Usuario {
      * Nombre de usuario (username).
      */
     private String username;
+    
+    //private List<Juegos> juegosDeseados;
+    //private List<Juegos> juegosBiblioteca;
 
     /**
      * Constructor que inicializa los datos del usuario.
