@@ -2,15 +2,106 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@USerView.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserViewControlador">
-    <children>
-      
-    </children>
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@UserView.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserViewControlador">
+   <children>
+      <Pane id="fondo" layoutX="430.0" layoutY="342.0" prefHeight="675.0" prefWidth="1060.0" styleClass="fondo">
+         <children>
+            <ImageView fitHeight="135.0" fitWidth="160.0" layoutX="275.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" styleClass="logo">
+               <image>
+                  <Image url="@../images/persona1.png" />
+               </image></ImageView>
+            <Label layoutX="476.0" layoutY="35.0" text="Usuario" textFill="#d7d1d1">
+               <font>
+                  <Font name="System Bold" size="64.0" />
+               </font>
+            </Label>
+            <Pane layoutX="154.0" layoutY="208.0" prefHeight="418.0" prefWidth="779.0" styleClass="contenido">
+               <children>
+                  <Label layoutX="53.0" layoutY="46.0" text="Nombre">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="53.0" layoutY="223.0" text="Username">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="53.0" layoutY="322.0" text="Email">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="53.0" layoutY="132.0" text="Apellidos">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="225.0" layoutY="55.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="389.0" layoutY="46.0" text="Cambiar Contraseña">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="390.0" layoutY="188.0" text="Juegos Deseados">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="389.0" layoutY="273.0" text="Juegos en Biblioteca">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="cerrarSesionButton" layoutX="634.0" layoutY="364.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Cerrar Sesión" />
+                  <Button fx:id="cambiarPassword" layoutX="634.0" layoutY="107.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="Cambiar" />
+                  <Label fx:id="NombreField" layoutX="178.0" layoutY="46.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="BibliotecaFild" layoutX="634.0" layoutY="273.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="DeseadosField" layoutX="635.0" layoutY="188.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="EmailFiel" layoutX="178.0" layoutY="322.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="usernameField" layoutX="178.0" layoutY="223.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="ApellidoField" layoutX="178.0" layoutY="132.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="nuevaPassword" layoutX="389.0" layoutY="94.0" prefHeight="25.0" prefWidth="221.0" promptText="Nueva Contraseña">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </PasswordField>
+               </children></Pane>
+         </children></Pane>
+   </children>
 </AnchorPane>
-

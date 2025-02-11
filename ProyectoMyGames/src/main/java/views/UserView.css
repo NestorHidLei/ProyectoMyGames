@@ -1,8 +1,21 @@
 .background {
-    -fx-background-image: url("../images/fondo.png");
+    -fx-background-image: url("../images/cuenta.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 }
 
+.logo{
+	 -fx-background-image: url("../images/persona1.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
 
+.contenido {
+    -fx-background-color: rgba(157, 157, 157, 0.9); /* Color con 90% de opacidad */
+    -fx-background-radius: 15px; /* Bordes redondeados */
+}
 
+.fondo {
+    -fx-background-color: rgba(28, 27, 27, 0.9); /* Color con 90% de opacidad */
+    -fx-background-radius: 15px; /* Bordes redondeados */
+}
