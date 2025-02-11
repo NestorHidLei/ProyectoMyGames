@@ -49,11 +49,6 @@ public class ConexionBD {
                         resultSet.getString("usuario")
                 );
 
-                // Cargar lista de juegos deseados
-                usuario.setJuegosDeseados(obtenerJuegosPorUsuario(conexion, username, "Deseados"));
-
-                // Cargar lista de juegos en la biblioteca
-                usuario.setJuegosBiblioteca(obtenerJuegosPorUsuario(conexion, username, "Biblioteca"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,30 +56,6 @@ public class ConexionBD {
         return usuario;
     }
 
-    /**
-     * Obtiene la lista de juegos de un usuario según la categoría.
-     * 
-     * @param conexion Conexión a la base de datos.
-     * @param username Nombre de usuario.
-     * @param categoria Tipo de juegos a obtener ("Deseados" o "Biblioteca").
-     * @return Lista de IDs de juegos.
-     */
-    private List<Integer> obtenerJuegosPorUsuario(Connection conexion, String username, String categoria) {
-        List<Integer> juegos = new ArrayList<>();
-        String query = "SELECT juego_id FROM Juegos WHERE usuario = ? AND categoria = ?";
 
-        try (PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, categoria);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                juegos.add(resultSet.getInt("juego_id"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return juegos;
-    }
 }
 
