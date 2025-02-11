@@ -78,31 +78,35 @@ public class iniciarSesionControlador {
 	 * un mensaje de éxito o error según el resultado de la autenticación.
 	 */
 	private void handleLogin() {
-		// Verifica si los campos de usuario o contraseña están vacíos
-		if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
-			showAlert(Alert.AlertType.ERROR, "Campos vacíos", "Por favor, introduce tu usuario y contraseña.");
-			return;
-		}
+	    if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+	        showAlert(Alert.AlertType.ERROR, "Campos vacíos", "Por favor, introduce tu usuario y contraseña.");
+	        return;
+	    }
 
-		String username = usernameField.getText().trim();
-		String password = passwordField.getText().trim();
+	    String username = usernameField.getText().trim();
+	    String password = passwordField.getText().trim();
 
-		 if (authenticateUser(username, password)) {
-		            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
-		            Scene scene = null;
-		    		try {
-		    			scene = new Scene(loader.load());
-		    		} catch (IOException e) {
-		    			e.printStackTrace();
-		    		}
+	    if (authenticateUser(username, password)) {
+	        try {
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
+	            Scene scene = new Scene(loader.load());
 
-		            Stage stage = (Stage) loginButton.getScene().getWindow();
-		            stage.setScene(scene);
-		            stage.show();
-		    } else {
-		        showAlert(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
-		    }
+	            // Obtener el controlador de la pantalla Home
+	            HomeControlador homeController = loader.getController();
+	            homeController.setUsuario(username); // Pasar el usuario al Home
+
+	            Stage stage = (Stage) loginButton.getScene().getWindow();
+	            stage.setScene(scene);
+	            stage.show();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la pantalla principal.");
+	        }
+	    } else {
+	        showAlert(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
+	    }
 	}
+
 
 	/**
 	 * Autentica al usuario verificando las credenciales en la base de datos.
