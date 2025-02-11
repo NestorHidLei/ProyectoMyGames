@@ -2,7 +2,11 @@ package controllers;
 
 import java.util.List;
 import conexiones.ConexionAPI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
@@ -11,8 +15,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Usuario;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 
 public class HomeControlador {
 
@@ -42,21 +54,24 @@ public class HomeControlador {
     @FXML
     private StackPane juegoBox;
 
-   
-
+    @FXML
+    private ScrollPane scrollPaneCategorias;
+    
+    @FXML
+    private ComboBox<String> filtroComboBox; 
+    
     @FXML
     public void initialize() {
         ConexionAPI conexionAPI = new ConexionAPI();
+        ObservableList<String> opcionesFiltro = FXCollections.observableArrayList(
+                "Plataforma", "Género", "Rating"
+            );
+        filtroComboBox.setItems(opcionesFiltro);
+        
         cargarYMostrarJuegos(conexionAPI.obtenerMejoresRatings(), contenedorJuegosPopulares);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosMasNuevos(), contenedorJuegosNuevos);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosMultiplayer(), contenedorJuegosMultiplayer);
         cargarYMostrarJuegos(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
-    }
-
-    // Método para recibir el usuario autenticado
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-        
     }
 
     @FXML
@@ -68,9 +83,17 @@ public class HomeControlador {
             contenedorJuegosBusqueda.getChildren().clear();
             cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
             contenedorResultadosBusqueda.setVisible(true);
+            scrollPaneCategorias.setVisible(false); // Oculta las categorías
         } else {
             contenedorResultadosBusqueda.setVisible(false);
+            scrollPaneCategorias.setVisible(true); // Muestra las categorías si no hay búsqueda
         }
+    }
+
+    // Método para recibir el usuario autenticado
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        
     }
 
     private void cargarYMostrarJuegos(List<String[]> juegos, HBox contenedor) {
@@ -93,7 +116,7 @@ public class HomeControlador {
         fondoBlur.setPreserveRatio(false);
         fondoBlur.setEffect(new GaussianBlur(20)); // Aplicar efecto de desenfoque
 
-        // Portada del juego
+        // Portada del juego (imagen sin desenfoque)
         ImageView portada = new ImageView();
         portada.setFitWidth(220);
         portada.setFitHeight(220);
@@ -119,6 +142,10 @@ public class HomeControlador {
             fondoBlur.setImage(imagenPredeterminada);
         }
 
+        // Rectángulo negro para la información del juego
+        Rectangle rectanguloInfo = new Rectangle(250, 100, Color.BLACK);
+        rectanguloInfo.setTranslateY(150); // Posiciona el rectángulo en la parte inferior
+
         // Nombre y rating del juego
         Label nombre = new Label(juego[1]);
         nombre.getStyleClass().add("label-juego-nombre");
@@ -126,13 +153,65 @@ public class HomeControlador {
         Label rating = new Label("Rating: " + juego[3]);
         rating.getStyleClass().add("label-juego-rating");
 
-        // Contenedor para el contenido del juego
-        VBox contenido = new VBox(10, portada, nombre, rating);
-        contenido.setAlignment(Pos.CENTER);
+        // Contenedor para la información del juego
+        VBox infoBox = new VBox(5, nombre, rating); // Espaciado entre nombre y rating
+        infoBox.setAlignment(Pos.CENTER);
+        infoBox.setTranslateY(150); // Posiciona el VBox dentro del rectángulo negro
 
-        // Añadir fondo desenfocado y contenido al StackPane
-        juegoBox.getChildren().addAll(fondoBlur, contenido);
+        // Añadir elementos al StackPane (el orden importa)
+        juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
 
         return juegoBox;
+    }
+    
+    @FXML
+    private void irAHome(ActionEvent event) {
+        try {
+            // Cargar la vista de Home
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
+            Parent root = loader.load();
+
+            // Obtener la escena actual y cambiarla
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    private void aplicarFiltro(ActionEvent event) {
+        String filtroSeleccionado = filtroComboBox.getValue(); // Obtener el filtro seleccionado
+        String query = campoBusqueda.getText().trim(); // Obtener el texto de búsqueda
+
+        if (filtroSeleccionado != null && !query.isEmpty()) {
+            ConexionAPI conexionAPI = new ConexionAPI();
+            List<String[]> resultados;
+
+            // Aplicar el filtro correspondiente
+            switch (filtroSeleccionado) {
+                case "Plataforma":
+                    resultados = conexionAPI.buscarJuegosPorPlataforma(query);
+                    break;
+                case "Género":
+                    resultados = conexionAPI.buscarJuegosPorGenero(query);
+                    break;
+                case "Rating":
+                    resultados = conexionAPI.buscarJuegosPorRating(query);
+                    break;
+                default:
+                    resultados = conexionAPI.buscarJuegosPorNombre(query); // Búsqueda por defecto
+                    break;
+            }
+
+            // Mostrar los resultados
+            contenedorJuegosBusqueda.getChildren().clear();
+            cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
+            contenedorResultadosBusqueda.setVisible(true);
+        } else {
+            contenedorResultadosBusqueda.setVisible(false);
+        }
     }
 }
