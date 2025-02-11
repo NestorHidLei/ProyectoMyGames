@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,6 +18,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Usuario;
 
 /**
  * Controlador para la pantalla de inicio de sesión en la aplicación.
@@ -87,25 +89,33 @@ public class iniciarSesionControlador {
 	    String password = passwordField.getText().trim();
 
 	    if (authenticateUser(username, password)) {
-	        try {
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
-	            Scene scene = new Scene(loader.load());
+	        ConexionBD conexionBD = new ConexionBD();
+	        Usuario usuario = conexionBD.obtenerUsuarioPorNombre(username);
 
-	            // Obtener el controlador de la pantalla Home
-	            HomeControlador homeController = loader.getController();
-	            homeController.setUsuario(username); // Pasar el usuario al Home
+	        if (usuario != null) {
+	            try {
+	                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
+	                Parent root = loader.load();
 
-	            Stage stage = (Stage) loginButton.getScene().getWindow();
-	            stage.setScene(scene);
-	            stage.show();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la pantalla principal.");
+	                // Obtener el controlador de la pantalla Home
+	                HomeControlador homeController = loader.getController();
+	                homeController.setUsuario(usuario); // Pasar el usuario completo
+
+	                Stage stage = (Stage) loginButton.getScene().getWindow();
+	                stage.setScene(new Scene(root));
+	                stage.show();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	                showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la pantalla principal.");
+	            }
+	        } else {
+	            showAlert(Alert.AlertType.ERROR, "Error", "Usuario no encontrado.");
 	        }
 	    } else {
 	        showAlert(Alert.AlertType.ERROR, "Inicio de sesión fallido", "Usuario o contraseña incorrectos.");
 	    }
 	}
+
 
 
 	/**

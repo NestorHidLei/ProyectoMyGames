@@ -11,11 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import model.Usuario;
 import javafx.scene.control.Label;
 
 public class HomeControlador {
 
-    private String usuario; // Almacena el usuario autenticado
+    private Usuario usuario; // Almacena el usuario autenticado
 
     @FXML
     private HBox contenedorJuegosPopulares;
@@ -53,7 +54,7 @@ public class HomeControlador {
     }
 
     // Método para recibir el usuario autenticado
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         
     }
