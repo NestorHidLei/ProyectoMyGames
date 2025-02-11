@@ -28,7 +28,7 @@ public class ConexionBD {
      * Obtiene un usuario de la base de datos por su nombre de usuario.
      * 
      * @param username Nombre de usuario.
-     * @return Objeto Usuario si existe, null si no se encuentra.
+     * @return Objeto `Usuario` si existe, `null` si no se encuentra.
      */
     public Usuario obtenerUsuarioPorNombre(String username) {
         Usuario usuario = null;
