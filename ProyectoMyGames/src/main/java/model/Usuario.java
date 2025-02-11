@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 /**
  * Clase modelo para representar a un usuario.
  * 
@@ -33,8 +35,10 @@ public class Usuario {
      */
     private String username;
     
-    //private List<Juegos> juegosDeseados;
-    //private List<Juegos> juegosBiblioteca;
+    private List<Integer> juegosDeseados;
+    
+    
+    private List<Integer> juegosBiblioteca;
 
     /**
      * Constructor que inicializa los datos del usuario.
@@ -53,7 +57,23 @@ public class Usuario {
         this.username = username;
     }
 
-    /**
+    public List<Integer> getJuegosDeseados() {
+		return juegosDeseados;
+	}
+
+	public void setJuegosDeseados(List<Integer> juegosDeseados) {
+		this.juegosDeseados = juegosDeseados;
+	}
+
+	public List<Integer> getJuegosBiblioteca() {
+		return juegosBiblioteca;
+	}
+
+	public void setJuegosBiblioteca(List<Integer> juegosBiblioteca) {
+		this.juegosBiblioteca = juegosBiblioteca;
+	}
+
+	/**
      * Obtiene el nombre del usuario.
      * 
      * @return El nombre del usuario.
