@@ -1,53 +1,84 @@
 package aplication;
 
-import controllers.BibliotecaControlador;
-import controllers.DeseadosControlador;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Usuario;
+import javafx.stage.StageStyle;
 
+/**
+ * Clase principal de la aplicación.
+ * 
+ * Esta clase extiende {@link Application} y sirve como punto de entrada para la aplicación.
+ * Configura y muestra la ventana principal de inicio de sesión.
+ */
 public class MainApp extends Application {
 
-    private Usuario usuario; // Usuario autenticado
+    /**
+     * Escenario principal de la aplicación.
+     */
+    private Stage primaryStage;
 
+    /**
+     * Constructor de la clase principal.
+     */
+    public MainApp() {
+
+    }
+
+    /**
+     * Método de inicio que se ejecuta al lanzar la aplicación.
+     * 
+     * @param primaryStage El escenario principal.
+     */
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Login");
+
+        iniciarSesion();
+    }
+
+    /**
+     * Muestra la ventana de inicio de sesión.
+     * 
+     * Este método carga el archivo FXML correspondiente y configura la escena para el escenario principal.
+     */
+    public void iniciarSesion() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Biblioteca.fxml"));
-            Parent root = loader.load();
-            usuario = new Usuario("Prueba", "Usuario", "prueba@example.com", "test123", "usuarioPrueba", "4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6", "4,5,6,4,5,6,4,5,6,4,5,6,4,5,6,4,5,6");
-            // Obtener el controlador después de cargar el FXML
-            BibliotecaControlador controlador = loader.getController();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("/views/IniciarSesion.fxml"));
+            Pane iniciarSesion = (Pane) loader.load();
 
-            if (controlador != null) {
-                if (usuario != null) {
-                    controlador.setUsuario(usuario);
-                } else {
-                    System.out.println("ERROR: Usuario es null.");
-                }
-            } else {
-                System.out.println("ERROR: El controlador no se pudo cargar.");
-            }
-
-            primaryStage.setTitle("Juegos Deseados");
-            primaryStage.setScene(new Scene(root));
+            Scene scene = new Scene(iniciarSesion);
+            primaryStage.initStyle(StageStyle.UNDECORATED);
+            primaryStage.setScene(scene);
             primaryStage.show();
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error al cargar el archivo FXML: " + e.getMessage());
         }
     }
 
-    public void iniciarSesion() {
-        // Simulación de obtención del usuario autenticado
-        usuario = new Usuario("Prueba", "Usuario", "prueba@example.com", "test123", "usuarioPrueba", "3328,3498,4200", "4,5,6");
+    /**
+     * Devuelve el escenario principal de la aplicación.
+     * 
+     * @return El escenario principal.
+     */
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
+    /**
+     * Punto de entrada principal para lanzar la aplicación.
+     * 
+     * @param args Argumentos de la línea de comandos.
+     */
     public static void main(String[] args) {
         launch(args);
-    }
+    }
 }
-
