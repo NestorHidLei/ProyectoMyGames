@@ -35,10 +35,10 @@ public class Usuario {
      */
     private String username;
     
-    private List<Integer> juegosDeseados;
+    private List<String> juegosDeseados;
     
     
-    private List<Integer> juegosBiblioteca;
+    private List<String> juegosBiblioteca;
 
     /**
      * Constructor que inicializa los datos del usuario.
@@ -57,19 +57,19 @@ public class Usuario {
         this.username = username;
     }
 
-    public List<Integer> getJuegosDeseados() {
+    public List<String> getJuegosDeseados() {
 		return juegosDeseados;
 	}
 
-	public void setJuegosDeseados(List<Integer> juegosDeseados) {
+	public void setJuegosDeseados(List<String> juegosDeseados) {
 		this.juegosDeseados = juegosDeseados;
 	}
 
-	public List<Integer> getJuegosBiblioteca() {
+	public List<String> getJuegosBiblioteca() {
 		return juegosBiblioteca;
 	}
 
-	public void setJuegosBiblioteca(List<Integer> juegosBiblioteca) {
+	public void setJuegosBiblioteca(List<String> juegosBiblioteca) {
 		this.juegosBiblioteca = juegosBiblioteca;
 	}
 
