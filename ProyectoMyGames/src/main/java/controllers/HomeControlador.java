@@ -4,6 +4,8 @@ import java.util.List;
 import conexiones.ConexionAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.Service;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,10 +70,33 @@ public class HomeControlador {
             );
         filtroComboBox.setItems(opcionesFiltro);
         
-        cargarYMostrarJuegos(conexionAPI.obtenerMejoresRatings(), contenedorJuegosPopulares);
-        cargarYMostrarJuegos(conexionAPI.obtenerJuegosMasNuevos(), contenedorJuegosNuevos);
-        cargarYMostrarJuegos(conexionAPI.obtenerJuegosMultiplayer(), contenedorJuegosMultiplayer);
-        cargarYMostrarJuegos(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
+        // Cargar juegos en segundo plano
+        cargarJuegosEnSegundoPlano(conexionAPI.obtenerMejoresRatings(), contenedorJuegosPopulares);
+        cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosMasNuevos(), contenedorJuegosNuevos);
+        cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosMultiplayer(), contenedorJuegosMultiplayer);
+        cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
+    }
+
+    private void cargarJuegosEnSegundoPlano(List<String[]> juegos, HBox contenedor) {
+        Service<Void> service = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        // Simular una carga larga
+                        Thread.sleep(1000);
+                        return null;
+                    }
+                };
+            }
+        };
+
+        service.setOnSucceeded(event -> {
+            cargarYMostrarJuegos(juegos, contenedor);
+        });
+
+        service.start();
     }
 
     @FXML
@@ -79,11 +104,27 @@ public class HomeControlador {
         String query = campoBusqueda.getText().trim();
         if (!query.isEmpty()) {
             ConexionAPI conexionAPI = new ConexionAPI();
-            List<String[]> resultados = conexionAPI.buscarJuegosPorNombre(query);
-            contenedorJuegosBusqueda.getChildren().clear();
-            cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
-            contenedorResultadosBusqueda.setVisible(true);
-            scrollPaneCategorias.setVisible(false); // Oculta las categorías
+            Service<List<String[]>> service = new Service<List<String[]>>() {
+                @Override
+                protected Task<List<String[]>> createTask() {
+                    return new Task<List<String[]>>() {
+                        @Override
+                        protected List<String[]> call() throws Exception {
+                            return conexionAPI.buscarJuegosPorNombre(query);
+                        }
+                    };
+                }
+            };
+
+            service.setOnSucceeded(event -> {
+                List<String[]> resultados = service.getValue();
+                contenedorJuegosBusqueda.getChildren().clear();
+                cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
+                contenedorResultadosBusqueda.setVisible(true);
+                scrollPaneCategorias.setVisible(false); // Oculta las categorías
+            });
+
+            service.start();
         } else {
             contenedorResultadosBusqueda.setVisible(false);
             scrollPaneCategorias.setVisible(true); // Muestra las categorías si no hay búsqueda
@@ -93,7 +134,6 @@ public class HomeControlador {
     // Método para recibir el usuario autenticado
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-        
     }
 
     private void cargarYMostrarJuegos(List<String[]> juegos, HBox contenedor) {
@@ -188,28 +228,35 @@ public class HomeControlador {
 
         if (filtroSeleccionado != null && !query.isEmpty()) {
             ConexionAPI conexionAPI = new ConexionAPI();
-            List<String[]> resultados;
+            Service<List<String[]>> service = new Service<List<String[]>>() {
+                @Override
+                protected Task<List<String[]>> createTask() {
+                    return new Task<List<String[]>>() {
+                        @Override
+                        protected List<String[]> call() throws Exception {
+                            switch (filtroSeleccionado) {
+                                case "Plataforma":
+                                    return conexionAPI.buscarJuegosPorPlataforma(query);
+                                case "Género":
+                                    return conexionAPI.buscarJuegosPorGenero(query);
+                                case "Rating":
+                                    return conexionAPI.buscarJuegosPorRating(query);
+                                default:
+                                    return conexionAPI.buscarJuegosPorNombre(query);
+                            }
+                        }
+                    };
+                }
+            };
 
-            // Aplicar el filtro correspondiente
-            switch (filtroSeleccionado) {
-                case "Plataforma":
-                    resultados = conexionAPI.buscarJuegosPorPlataforma(query);
-                    break;
-                case "Género":
-                    resultados = conexionAPI.buscarJuegosPorGenero(query);
-                    break;
-                case "Rating":
-                    resultados = conexionAPI.buscarJuegosPorRating(query);
-                    break;
-                default:
-                    resultados = conexionAPI.buscarJuegosPorNombre(query); // Búsqueda por defecto
-                    break;
-            }
+            service.setOnSucceeded(event2 -> {
+                List<String[]> resultados = service.getValue();
+                contenedorJuegosBusqueda.getChildren().clear();
+                cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
+                contenedorResultadosBusqueda.setVisible(true);
+            });
 
-            // Mostrar los resultados
-            contenedorJuegosBusqueda.getChildren().clear();
-            cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
-            contenedorResultadosBusqueda.setVisible(true);
+            service.start();
         } else {
             contenedorResultadosBusqueda.setVisible(false);
         }
