@@ -2,8 +2,6 @@ package conexiones;
 
 import model.Usuario;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Clase para gestionar la conexión con la base de datos SQLite.
@@ -32,8 +30,8 @@ public class ConexionBD {
      */
     public Usuario obtenerUsuarioPorNombre(String username) {
         Usuario usuario = null;
-        String query = "SELECT nombre, apellidos, email, password, usuario FROM Usuario WHERE usuario = ?";
-        
+        String query = "SELECT UsuarioID, Nombre, Apellidos, email, password, usuario, Deseados, Biblioteca FROM Usuario WHERE usuario = ?";
+
         try (Connection conexion = conectar();
              PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
 
@@ -42,19 +40,18 @@ public class ConexionBD {
 
             if (resultSet.next()) {
                 usuario = new Usuario(
-                        resultSet.getString("nombre"),
-                        resultSet.getString("apellidos"),
+                        resultSet.getString("Nombre"),
+                        resultSet.getString("Apellidos"),
                         resultSet.getString("email"),
                         resultSet.getString("password"),
-                        resultSet.getString("usuario")
+                        resultSet.getString("usuario"),
+                        resultSet.getString("Deseados"),
+                        resultSet.getString("Biblioteca")
                 );
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return usuario;
     }
-
-
 }

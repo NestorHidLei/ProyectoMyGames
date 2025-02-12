@@ -1,6 +1,8 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Clase modelo para representar a un usuario.
@@ -57,109 +59,40 @@ public class Usuario {
         this.username = username;
     }
 
-    public List<String> getJuegosDeseados() {
-		return juegosDeseados;
-	}
-
-	public void setJuegosDeseados(List<String> juegosDeseados) {
-		this.juegosDeseados = juegosDeseados;
-	}
-
-	public List<String> getJuegosBiblioteca() {
-		return juegosBiblioteca;
-	}
-
-	public void setJuegosBiblioteca(List<String> juegosBiblioteca) {
-		this.juegosBiblioteca = juegosBiblioteca;
-	}
-
-	/**
-     * Obtiene el nombre del usuario.
-     * 
-     * @return El nombre del usuario.
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * Establece el nombre del usuario.
-     * 
-     * @param nombre El nombre del usuario.
-     */
-    public void setNombre(String nombre) {
+    
+    
+    public Usuario( String nombre, String apellidos, String email, String password, String usuario, String deseados, String biblioteca) {
         this.nombre = nombre;
-    }
-
-    /**
-     * Obtiene los apellidos del usuario.
-     * 
-     * @return Los apellidos del usuario.
-     */
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    /**
-     * Establece los apellidos del usuario.
-     * 
-     * @param apellidos Los apellidos del usuario.
-     */
-    public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
-    }
-
-    /**
-     * Obtiene el correo electrónico del usuario.
-     * 
-     * @return El correo electrónico del usuario.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Establece el correo electrónico del usuario.
-     * 
-     * @param email El correo electrónico del usuario.
-     */
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * Obtiene la contraseña del usuario.
-     * 
-     * @return La contraseña del usuario.
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Establece la contraseña del usuario.
-     * 
-     * @param password La contraseña del usuario.
-     */
-    public void setPassword(String password) {
         this.password = password;
+        this.username = usuario;
+        this.juegosDeseados = convertirALista(deseados);
+        this.juegosBiblioteca = convertirALista(biblioteca);
     }
 
     /**
-     * Obtiene el nombre de usuario.
-     * 
-     * @return El nombre de usuario.
+     * Convierte una cadena de IDs separados por comas en una lista de enteros.
      */
-    public String getUsername() {
-        return username;
+    private List<String> convertirALista(String ids) {
+        if (ids == null || ids.trim().isEmpty()) {
+            return List.of();
+        }
+        return Arrays.stream(ids.split(","))
+                     .map(String::trim)
+                     .filter(s -> s.matches("\\d+")) // Asegura que solo toma números
+                     .collect(Collectors.toList());
     }
 
-    /**
-     * Establece el nombre de usuario.
-     * 
-     * @param username El nombre de usuario.
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    // Getters y Setters
+    public String getNombre() { return nombre; }
+    public String getApellidos() { return apellidos; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
+    public String getUsername() { return username; }
+    public List<String> getJuegosDeseados() { return juegosDeseados; }
+    public List<String> getJuegosBiblioteca() { return juegosBiblioteca; }
+
+    public void setJuegosDeseados(String deseados) { this.juegosDeseados = convertirALista(deseados); }
+    public void setJuegosBiblioteca(String biblioteca) { this.juegosBiblioteca = convertirALista(biblioteca); }
 }

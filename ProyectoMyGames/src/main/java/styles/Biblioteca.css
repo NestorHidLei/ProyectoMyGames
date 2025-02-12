@@ -1,5 +1,5 @@
 .background {
-    -fx-background-image: url("../images/fondo.png");
+    -fx-background-image: url("../images/FondoBiblioteca.png");
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 }
@@ -12,11 +12,6 @@
     -fx-alignment: center;
 }
 
-.vertical-scroll {
-    -fx-background: transparent;
-    -fx-background-color: transparent;
-    -fx-padding: 10;
-}
 
 .horizontal-scroll .viewport {
     -fx-background-color: transparent;
@@ -27,6 +22,9 @@
     -fx-padding: 0 20px; /* 0 arriba y abajo, 20px a la izquierda y derecha */
     -fx-background-insets: 0;
 }
+
+
+
 
 .horizontal-scroll .scroll-bar:horizontal {
     -fx-opacity: 0; 
@@ -68,44 +66,6 @@
     -fx-cursor: hand;
 }
 
-.search-field {
-    -fx-pref-width: 400px;
-    -fx-pref-height: 40px;
-    -fx-font-size: 16px;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
-    -fx-padding: 10;
-    -fx-background-color: rgba(255, 255, 255, 0.2); /* Fondo semi-transparente */
-    -fx-text-fill: white; /* Color del texto */
-    -fx-border-color: rgba(255, 255, 255, 0.5); /* Borde semi-transparente */
-    -fx-border-width: 2;
-	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
-}
-
-.search-field:focused {
-    -fx-background-color: rgba(255, 255, 255, 0.3); /* Fondo más claro al enfocar */
-    -fx-border-color: rgba(255, 255, 255, 0.8); /* Borde más visible al enfocar */
-}
-
-.search-button {
-    -fx-pref-width: 100px;
-    -fx-pref-height: 40px;
-    -fx-font-size: 16px;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
-    -fx-background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
-    -fx-text-fill: white; /* Color del texto */
-    -fx-border-color: rgba(255, 255, 255, 0.5); /* Borde semi-transparente */
-    -fx-border-width: 2;
-    -fx-cursor: hand;
-	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
-
-}
-
-.search-button:hover {
-    -fx-background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro al pasar el ratón */
-    -fx-border-color: rgba(255, 255, 255, 0.8); /* Borde más visible al pasar el ratón */
-}
 
 .juego-box {
     -fx-background-radius: 15;
