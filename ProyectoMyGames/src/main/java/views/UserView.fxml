@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@UserView.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserViewControlador">
+<AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../styles/UserView.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserViewControlador">
    <children>
       <Pane id="fondo" layoutX="430.0" layoutY="342.0" prefHeight="675.0" prefWidth="1060.0" styleClass="fondo">
          <children>
