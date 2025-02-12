@@ -4,8 +4,6 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -17,7 +15,7 @@ import javafx.stage.StageStyle;
  * Configura y muestra la ventana principal de inicio de sesión.
  */
 public class MainApp extends Application {
-
+	 
     /**
      * Escenario principal de la aplicación.
      */
@@ -72,13 +70,14 @@ public class MainApp extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-
     /**
      * Punto de entrada principal para lanzar la aplicación.
-     * 
+     *
      * @param args Argumentos de la línea de comandos.
      */
     public static void main(String[] args) {
         launch(args);
-    }
+    }
+
+   
 }
