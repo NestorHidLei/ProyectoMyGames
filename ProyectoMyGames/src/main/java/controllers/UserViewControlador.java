@@ -20,7 +20,7 @@ import javafx.event.ActionEvent;
 
 import model.Usuario;
 
-public class UserViewControlador {
+public class UserViewControlador extends Navegacion {
 
 	private Usuario usuario;
 
@@ -41,6 +41,14 @@ public class UserViewControlador {
 	private Button cerrarSesionButton;
 	@FXML
 	private Button cambiarPassword;
+	@FXML
+	private Button inicio;
+	@FXML
+	private Button deseados;
+	@FXML
+	private Button biblioteca;
+	@FXML
+	private Button user;
 	
 	@FXML
 	private PasswordField nuevaPassword;
@@ -49,6 +57,9 @@ public class UserViewControlador {
 	public void initialize() {
 		cerrarSesionButton.setOnAction(event -> cerrarSesion(event));
 		cambiarPassword.setOnAction(event -> cambiarPassword());
+        inicio.setOnAction(event -> abrirInicio(event, usuario));
+		deseados.setOnAction(event -> abrirDeseados(event, usuario));
+		biblioteca.setOnAction(event -> abrirBiblioteca(event, usuario));
 	}
 
 	/**

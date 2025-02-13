@@ -1,6 +1,6 @@
 package aplication;
-
 import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,12 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-/**
- * Clase principal de la aplicación.
- * 
- * Esta clase extiende {@link Application} y sirve como punto de entrada para la aplicación.
- * Configura y muestra la ventana principal de inicio de sesión.
- */
+
 public class MainApp extends Application {
 	 
     /**
@@ -72,12 +67,13 @@ public class MainApp extends Application {
     }
     /**
      * Punto de entrada principal para lanzar la aplicación.
+     * 
      *
      * @param args Argumentos de la línea de comandos.
      */
     public static void main(String[] args) {
         launch(args);
     }
-
+    }
    
-}
+
