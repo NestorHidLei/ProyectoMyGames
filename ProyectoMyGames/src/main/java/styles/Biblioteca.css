@@ -122,3 +122,24 @@
 .combo-box .arrow {
     -fx-background-color: white;
 }
+
+.inicio{
+	-fx-background-image: url("../images/inicio.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.deseados{
+	-fx-background-image: url("../images/deseados.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.biblioteca{
+	-fx-background-image: url("../images/biblioteca.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.user{
+	-fx-background-image: url("../images/user.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}

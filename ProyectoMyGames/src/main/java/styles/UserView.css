@@ -19,3 +19,23 @@
     -fx-background-color: rgba(28, 27, 27, 0.9); /* Color con 90% de opacidad */
     -fx-background-radius: 15px; /* Bordes redondeados */
 }
+.inicio{
+	-fx-background-image: url("../images/inicio.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.deseados{
+	-fx-background-image: url("../images/deseados.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.biblioteca{
+	-fx-background-image: url("../images/biblioteca.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+.user{
+	-fx-background-image: url("../images/user.png");
+	 -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}

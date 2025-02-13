@@ -1,10 +1,13 @@
 package controllers;
 
 import conexiones.ConexionAPI;
+import conexiones.ConexionBD;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -15,13 +18,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
 import model.Usuario;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BibliotecaControlador {
+public class BibliotecaControlador extends Navegacion {
 	 private Usuario usuario; // Usuario autenticado
-
+	 private ConexionBD conexionBD = new ConexionBD();
 	    @FXML
 	    private VBox contenedorResultadosBusqueda; // Ajustado para coincidir con el FXML
 
@@ -32,10 +39,26 @@ public class BibliotecaControlador {
 	    private Label mensajeNoJuegos;
 
 	    @FXML
+		private Button cerrarSesionButton;
+		@FXML
+		private Button cambiarPassword;
+		@FXML
+		private Button inicio;
+		@FXML
+		private Button deseados;
+		@FXML
+		private Button biblioteca;
+		@FXML
+		private Button user;
+	    
+	    @FXML
 	    public void initialize() {
 	        mensajeNoJuegos.setVisible(true);
 	        mensajeNoJuegos.setText("Cargando juegos deseados...");
 	        contenedorResultadosBusqueda.setVisible(false);
+	        inicio.setOnAction(event -> abrirInicio(event, usuario));
+			deseados.setOnAction(event -> abrirDeseados(event, usuario));
+			user.setOnAction(event -> abrirUser(event, usuario));
 	    }
 
 	    /**
@@ -60,31 +83,21 @@ public class BibliotecaControlador {
 	            return;
 	        }
 
-	        // Convertir la cadena de IDs a una lista
-	        List<String> idsJuegosDeseados = usuario.getJuegosBiblioteca();
+	        List<String> idsJuegosDeseados = usuario.getJuegosDeseados();
 
 	        if (idsJuegosDeseados.isEmpty()) {
 	            mostrarMensajeSinJuegos();
 	            return;
 	        }
 
-	        ConexionAPI conexionAPI = new ConexionAPI();
-
-	        // Cargar juegos en segundo plano
+	        // Cargar juegos en segundo plano desde la base de datos
 	        Service<List<String[]>> service = new Service<>() {
 	            @Override
 	            protected Task<List<String[]>> createTask() {
 	                return new Task<>() {
 	                    @Override
 	                    protected List<String[]> call() {
-	                        List<String[]> juegos = new ArrayList<>();
-	                        for (String id : idsJuegosDeseados) {
-	                            String[] juego = conexionAPI.buscarJuegoPorId(id.trim());
-	                            if (juego != null) {
-	                                juegos.add(juego);
-	                            }
-	                        }
-	                        return juegos;
+	                        return conexionBD.obtenerJuegosPorIds(idsJuegosDeseados);
 	                    }
 	                };
 	            }
@@ -116,9 +129,6 @@ public class BibliotecaControlador {
 	        contenedorJuegosBusqueda.getChildren().clear();
 	    }
 
-	    /**
-	     * Muestra los juegos obtenidos en el contenedor.
-	     */
 	    private void cargarYMostrarJuegos(List<String[]> juegos) {
 	        contenedorJuegosBusqueda.getChildren().clear();
 	        for (String[] juego : juegos) {
@@ -132,38 +142,30 @@ public class BibliotecaControlador {
 	        juegoBox.getStyleClass().add("juego-box");
 	        juegoBox.setPrefSize(250, 400);
 
-	        // Fondo desenfocado
+	     // Fondo desenfocado
 	        ImageView fondoBlur = new ImageView();
 	        fondoBlur.setFitWidth(250);
 	        fondoBlur.setFitHeight(400);
 	        fondoBlur.setPreserveRatio(false);
 	        fondoBlur.setEffect(new GaussianBlur(20));
 
-	        // Portada del juego (imagen sin desenfoque)
+	        
 	        ImageView portada = new ImageView();
-	        portada.setFitWidth(220);
-	        portada.setFitHeight(220);
-	        portada.setPreserveRatio(true);
-
-	        // Verifica si la URL de la imagen es válida
 	        String urlImagen = juego[2];
-	        if (urlImagen != null && !urlImagen.isEmpty() && urlImagen.startsWith("http")) {
-	            try {
-	                Image imagen = new Image(urlImagen);
-	                portada.setImage(imagen);
-	                fondoBlur.setImage(imagen);
-	            } catch (IllegalArgumentException e) {
-	                Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
-	                portada.setImage(imagenPredeterminada);
-	                fondoBlur.setImage(imagenPredeterminada);
-	            }
-	        } else {
-	            Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
-	            portada.setImage(imagenPredeterminada);
-	            fondoBlur.setImage(imagenPredeterminada);
-	        }
+			portada.setFitWidth(220);
+			portada.setFitHeight(220);
+			portada.setPreserveRatio(true);
 
-	        // Rectángulo negro para la información del juego
+	        // Descargar la imagen en un hilo separado y actualizar en el hilo de JavaFX
+	        new Thread(() -> {
+	            Image imagen = descargarImagen(urlImagen);
+	            Platform.runLater(() -> portada.setImage(imagen));
+	            Platform.runLater(() -> fondoBlur.setImage(imagen));
+	        }).start();
+
+	        
+
+	     // Rectángulo negro para la información del juego
 	        Rectangle rectanguloInfo = new Rectangle(250, 100, Color.BLACK);
 	        rectanguloInfo.setTranslateY(150);
 
@@ -184,5 +186,50 @@ public class BibliotecaControlador {
 
 	        return juegoBox;
 	    }
+	    /**
+	     * Descarga una imagen desde la URL proporcionada.
+	     * Si la URL no es válida o la imagen no se puede cargar, usa una imagen por defecto.
+	     */
+	    private Image descargarImagen(String urlImagen) {
+	        if (urlImagen == null || urlImagen.isEmpty() || !urlImagen.startsWith("http")) {
+	            System.out.println("URL de imagen inválida: " + urlImagen);
+	            return cargarImagenLocal("/images/logo.png");
+	        }
+
+	        try {
+	            HttpURLConnection connection = (HttpURLConnection) new URL(urlImagen).openConnection();
+	            connection.setRequestMethod("GET");
+	            connection.setConnectTimeout(5000); // 5 segundos de espera
+	            connection.setReadTimeout(5000);
+	            connection.setDoInput(true);
+	            connection.connect();
+
+	            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+	                InputStream inputStream = connection.getInputStream();
+	                return new Image(inputStream);
+	            } else {
+	                System.out.println("No se pudo descargar la imagen: " + urlImagen);
+	            }
+	        } catch (Exception e) {
+	            System.out.println("Error al descargar la imagen: " + urlImagen);
+	        }
+
+	        // En caso de error, devolver la imagen por defecto
+	        return cargarImagenLocal("/images/logo.png");
+	    }
+
+	    /**
+	     * Carga una imagen local como respaldo en caso de fallo con la URL.
+	     */
+	    private Image cargarImagenLocal(String path) {
+	        InputStream is = getClass().getResourceAsStream(path);
+	        if (is != null) {
+	            return new Image(is);
+	        } else {
+	            System.out.println("Imagen local no encontrada: " + path);
+	            return null;
+	        }
+	    }
+	
 	}
 
