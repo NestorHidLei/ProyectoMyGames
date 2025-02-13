@@ -81,39 +81,95 @@ public class ConexionAPI {
         return obtenerListaDeJuegos(url);
     }
 
-    /**
-     * Busca juegos por plataforma.
-     * 
-     * @param plataforma Plataforma del juego a buscar.
-     * @return Lista de información de juegos (id, nombre, portada, rating).
-     */
-    public List<String[]> buscarJuegosPorPlataforma(String plataforma) {
-        String url = URL_API + "?key=" + CLAVE_API + "&platforms=" + plataforma;
+    
+    public List<String[]> buscarJuegosPorGenero(String nombre, String genero) {
+    	String generoID = switch (genero) {
+        case "acción" -> "4";
+        case "aventura" -> "3";
+        case "plataformas" -> "83";
+        case "rpg" -> "5";
+        case "shooter" -> "2";
+        case "estrategia" -> "10";
+        case "simulación" -> "14";
+        case "puzle" -> "7";
+        case "arcade" -> "11";
+        case "carreras" -> "1";
+        case "deportes" -> "15";
+        case "lucha" -> "6";
+        case "familia" -> "19";
+        case "tablero" -> "28";
+        case "educación" -> "34";
+        case "tarjeta" -> "17";
+        case "indie" -> "51";
+        case "música" -> "12";
+        case "casual" -> "40";
+        default -> "";
+    };
+        String url = URL_API + "?key=" + CLAVE_API + "&search=" + nombre + "&genres=" + generoID;
+        System.out.println(url);
         return obtenerListaDeJuegos(url);
     }
 
-    /**
-     * Busca juegos por género.
-     * 
-     * @param genero Género del juego a buscar.
-     * @return Lista de información de juegos (id, nombre, portada, rating).
-     */
-    public List<String[]> buscarJuegosPorGenero(String genero) {
-        String url = URL_API + "?key=" + CLAVE_API + "&genres=" + genero;
+    public List<String[]> buscarJuegosPorPlataforma(String nombre, String plataforma) {
+        String plataformasID = switch (plataforma) {
+        case "PC" -> "4,5,6"; // PC, macOS, Linux
+        case "Xbox" -> "1,14,186"; // Xbox One, Xbox 360, Xbox Series S/X
+        case "PlayStation" -> "187,18,16,17,19"; // PS5, PS4, PS3, PSP, PS Vita
+        case "Nintendo" -> "7,8,9,10,11,13"; // Switch, 3DS, DS, Wii U, Wii, DSi
+        case "Atari" -> "23,24,25,26,27,28,29,30,31"; // Various Atari consoles
+        case "Sega" -> "52,77,106,107,117,119,167"; // Sega Master System, Game Gear, Dreamcast, Saturn, 32X, Sega CD, Genesis
+        case "3DO" -> "111"; // 3DO console
+        case "Neo Geo" -> "12"; // Neo Geo
+        case "Web" -> "171"; // Web-based platforms
+        default -> "";
+        };
+        String url = URL_API + "?key=" + CLAVE_API + "&search=" + nombre + "&platforms=" + plataformasID;
+        System.out.println(url);
+
         return obtenerListaDeJuegos(url);
     }
+    
+    
+    public List<String[]> buscarJuegosPorGeneroYPlataforma(String nombre, String genero, String plataforma){
+    	String generoID = switch (genero) {
+        case "acción" -> "4";
+        case "aventura" -> "3";
+        case "plataformas" -> "83";
+        case "rpg" -> "5";
+        case "shooter" -> "2";
+        case "estrategia" -> "10";
+        case "simulación" -> "14";
+        case "puzle" -> "7";
+        case "arcade" -> "11";
+        case "carreras" -> "1";
+        case "deportes" -> "15";
+        case "lucha" -> "6";
+        case "familia" -> "19";
+        case "tablero" -> "28";
+        case "educación" -> "34";
+        case "tarjeta" -> "17";
+        case "indie" -> "51";
+        case "música" -> "12";
+        case "casual" -> "40";
+        default -> "";
+    };
+    	String plataformasID = switch (plataforma) {
+        case "PC" -> "4,5,6"; // PC, macOS, Linux
+        case "Xbox" -> "1,14,186"; // Xbox One, Xbox 360, Xbox Series S/X
+        case "PlayStation" -> "187,18,16,17,19"; // PS5, PS4, PS3, PSP, PS Vita
+        case "Nintendo" -> "7,8,9,10,11,13"; // Switch, 3DS, DS, Wii U, Wii, DSi
+        case "Atari" -> "23,24,25,26,27,28,29,30,31"; // Various Atari consoles
+        case "Sega" -> "52,77,106,107,117,119,167"; // Sega Master System, Game Gear, Dreamcast, Saturn, 32X, Sega CD, Genesis
+        case "3DO" -> "111"; // 3DO console
+        case "Neo Geo" -> "12"; // Neo Geo
+        case "Web" -> "171"; // Web-based platforms
+        default -> "";
+        };
+        String url = URL_API + "?key=" + CLAVE_API + "&search=" + nombre + "&platforms=" + plataformasID + "&genres=" + generoID;
+        System.out.println(url);
 
-    /**
-     * Busca juegos por rating.
-     * 
-     * @param rating Rating del juego a buscar.
-     * @return Lista de información de juegos (id, nombre, portada, rating).
-     */
-    public List<String[]> buscarJuegosPorRating(String rating) {
-        String url = URL_API + "?key=" + CLAVE_API + "&metacritic=" + rating;
         return obtenerListaDeJuegos(url);
     }
-
     /**
      * Obtiene juegos ordenados por un criterio y devuelve sus detalles.
      * 
@@ -218,4 +274,5 @@ public class ConexionAPI {
     public List<String[]> obtenerJuegosSingleplayer() {
         return obtenerJuegosPorEtiqueta("singleplayer");
     }
+    
 }

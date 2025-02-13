@@ -77,15 +77,15 @@
 		</ScrollPane>
          <Button fx:id="botonBuscar" layoutX="1719.0" layoutY="354.0" onAction="#buscarJuegos" prefHeight="45.0" styleClass="search-button" text="Buscar" />
       
-      <Button fx:id="botonInicio1" layoutX="50.0" layoutY="338.0" onAction="#irAHome" opacity="0.0" prefHeight="73.0" prefWidth="196.0" textFill="TRANSPARENT" />
-	  <Button fx:id="botonInicio2" layoutX="14.0" layoutY="211.0" onAction="#irAHome" opacity="0.0" prefHeight="73.0" prefWidth="208.0" textFill="TRANSPARENT" />
-	  <Button fx:id="botonInicio3" layoutX="14.0" layoutY="64.0" onAction="#irAHome" opacity="0.0" prefHeight="82.0" prefWidth="285.0" textFill="TRANSPARENT" />
-	  <Button fx:id="botonInicio4" layoutX="1709.0" onAction="#irAHome" opacity="0.0" prefHeight="197.0" prefWidth="208.0" textFill="TRANSPARENT" />
+      <Button fx:id="botonInicio" layoutX="50.0" layoutY="338.0" opacity="0.0" prefHeight="73.0" prefWidth="196.0" textFill="TRANSPARENT" />
+	  <Button fx:id="botonInicio" layoutX="14.0" layoutY="211.0" opacity="0.0" prefHeight="73.0" prefWidth="208.0" textFill="TRANSPARENT" />
+	  <Button fx:id="botonInicio" layoutX="14.0" layoutY="64.0" opacity="0.0" prefHeight="82.0" prefWidth="285.0" textFill="TRANSPARENT" />
+	  <Button fx:id="botonInicio" layoutX="1709.0" opacity="0.0" prefHeight="197.0" prefWidth="208.0" textFill="TRANSPARENT" />
 	
 	    <!-- ComboBox para seleccionar el filtro -->
-	    <ComboBox fx:id="filtroComboBox" layoutX="1540.0" layoutY="411.0" promptText="Filtrar por..." />
-		
-	    <!-- Botón para aplicar el filtro -->
-	    <Button fx:id="botonFiltrar" layoutX="1719.0" layoutY="411.0" onAction="#aplicarFiltro" styleClass="search-button" text="Filtrar" />
+		<ComboBox fx:id="filtroComboBoxGenero" layoutX="1540.0" layoutY="411.0" promptText="Filtrar por..." />
+		<ComboBox fx:id="filtroComboBoxPlataforma" layoutX="1376.0" layoutY="411.0" promptText="Filtrar por..." />
+
+		<Button fx:id="botonFiltrar" layoutX="1719.0" layoutY="411.0" onAction="#aplicarFiltro" styleClass="search-button" text="Filtrar" />
     </children>
 </AnchorPane>

@@ -4,8 +4,8 @@ import java.util.List;
 import conexiones.ConexionAPI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,9 +28,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 
-public class HomeControlador {
+public class HomeControlador extends Navegacion{
 
-    private Usuario usuario; // Almacena el usuario autenticado
+    private Usuario usuario; // Usuario autenticado
 
     @FXML
     private HBox contenedorJuegosPopulares;
@@ -54,37 +54,57 @@ public class HomeControlador {
     private HBox contenedorJuegosBusqueda;
 
     @FXML
-    private StackPane juegoBox;
+    private ScrollPane scrollPaneCategorias;
 
     @FXML
-    private ScrollPane scrollPaneCategorias;
+    private ComboBox<String> filtroComboBoxGenero;
     
     @FXML
-    private ComboBox<String> filtroComboBox; 
+    private ComboBox<String> filtroComboBoxPlataforma;
+
+    @FXML
+    private Button botonBuscar;
+
+    @FXML
+    private Button botonFiltrar;
     
+    @FXML
+    private Button botonInicio;
+    
+    private ConexionAPI conexionAPI = new ConexionAPI();
+
     @FXML
     public void initialize() {
-        ConexionAPI conexionAPI = new ConexionAPI();
-        ObservableList<String> opcionesFiltro = FXCollections.observableArrayList(
-                "Plataforma", "Género", "Rating"
-            );
-        filtroComboBox.setItems(opcionesFiltro);
-        
+        ObservableList<String> opcionesFiltroPlataforma = FXCollections.observableArrayList(
+                "PC", "Xbox", "PlayStation", "Nintendo", "Atari", "Sega", "3DO", "Neo Geo","Web"
+        );
+        ObservableList<String> opcionesFiltroGenero = FXCollections.observableArrayList(
+        	    "Acción", "Aventura", "Plataformas", "RPG", "Shooter", "Deportes",
+        	    "Estrategia", "Simulación", "Puzle", "Arcade", "Carreras",
+        	    "Lucha", "Familia", "Tablero", "Educación", "Tarjeta", "Indie", "Música"
+        	);
+
+        filtroComboBoxGenero.setItems(opcionesFiltroGenero);
+        filtroComboBoxPlataforma.setItems(opcionesFiltroPlataforma);
+
+
         // Cargar juegos en segundo plano
         cargarJuegosEnSegundoPlano(conexionAPI.obtenerMejoresRatings(), contenedorJuegosPopulares);
         cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosMasNuevos(), contenedorJuegosNuevos);
         cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosMultiplayer(), contenedorJuegosMultiplayer);
         cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
+        
+        botonInicio.setOnAction(event -> abrirInicio(event, usuario));
+        
     }
 
     private void cargarJuegosEnSegundoPlano(List<String[]> juegos, HBox contenedor) {
-        Service<Void> service = new Service<Void>() {
+        Service<Void> service = new Service<>() {
             @Override
             protected Task<Void> createTask() {
-                return new Task<Void>() {
+                return new Task<>() {
                     @Override
                     protected Void call() throws Exception {
-                        // Simular una carga larga
                         Thread.sleep(1000);
                         return null;
                     }
@@ -103,13 +123,12 @@ public class HomeControlador {
     private void buscarJuegos() {
         String query = campoBusqueda.getText().trim();
         if (!query.isEmpty()) {
-            ConexionAPI conexionAPI = new ConexionAPI();
-            Service<List<String[]>> service = new Service<List<String[]>>() {
+            Service<List<String[]>> service = new Service<>() {
                 @Override
                 protected Task<List<String[]>> createTask() {
-                    return new Task<List<String[]>>() {
+                    return new Task<>() {
                         @Override
-                        protected List<String[]> call() throws Exception {
+                        protected List<String[]> call() {
                             return conexionAPI.buscarJuegosPorNombre(query);
                         }
                     };
@@ -118,22 +137,73 @@ public class HomeControlador {
 
             service.setOnSucceeded(event -> {
                 List<String[]> resultados = service.getValue();
-                contenedorJuegosBusqueda.getChildren().clear();
                 cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
                 contenedorResultadosBusqueda.setVisible(true);
-                scrollPaneCategorias.setVisible(false); // Oculta las categorías
+                scrollPaneCategorias.setVisible(false);
+            });
+
+            service.start();
+        }
+    }
+
+    @FXML
+    private void aplicarFiltro(ActionEvent event) {
+        String filtroSeleccionadoGenero = filtroComboBoxGenero.getValue() != null ? filtroComboBoxGenero.getValue().toString() : "";
+        String filtroSeleccionadoPlataforma = filtroComboBoxPlataforma.getValue() != null ? filtroComboBoxPlataforma.getValue() : "";
+        final String query = campoBusqueda.getText().trim();
+
+        // Si al menos uno de los filtros es válido, se ejecuta la búsqueda
+        if (filtroSeleccionadoGenero != null || filtroSeleccionadoPlataforma != null) {
+            Service<List<String[]>> service = new Service<>() {
+                @Override
+                protected Task<List<String[]>> createTask() {
+                    return new Task<>() {
+                        @Override
+                        protected List<String[]> call() {
+                            if (filtroSeleccionadoGenero != null && esGenero(filtroSeleccionadoGenero) &&
+                                filtroSeleccionadoPlataforma != null && esPlataforma(filtroSeleccionadoPlataforma)) {
+                                return conexionAPI.buscarJuegosPorGeneroYPlataforma(query, filtroSeleccionadoGenero.toLowerCase(), filtroSeleccionadoPlataforma);
+                            } else if (filtroSeleccionadoGenero != null && esGenero(filtroSeleccionadoGenero)) {
+                                return conexionAPI.buscarJuegosPorGenero(query, filtroSeleccionadoGenero.toLowerCase());
+                            } else if (filtroSeleccionadoPlataforma != null && esPlataforma(filtroSeleccionadoPlataforma) ) {
+                                return conexionAPI.buscarJuegosPorPlataforma(query, filtroSeleccionadoPlataforma);
+                            } else {
+                                return conexionAPI.buscarJuegosPorNombre(query);
+                            }
+                        }
+                    };
+                }
+            };
+
+            service.setOnSucceeded(event2 -> {
+                List<String[]> resultados = service.getValue();
+                if (resultados != null && !resultados.isEmpty()) {
+                    cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
+                    contenedorResultadosBusqueda.setVisible(true);
+                    scrollPaneCategorias.setVisible(false);
+                } else {
+                    contenedorResultadosBusqueda.setVisible(false);
+                }
+            });
+
+            service.setOnFailed(event2 -> {
+                Throwable error = service.getException();
+                System.err.println("Error al cargar los juegos: " + error.getMessage());
+                contenedorResultadosBusqueda.setVisible(false);
             });
 
             service.start();
         } else {
             contenedorResultadosBusqueda.setVisible(false);
-            scrollPaneCategorias.setVisible(true); // Muestra las categorías si no hay búsqueda
         }
     }
 
-    // Método para recibir el usuario autenticado
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    private boolean esGenero(String filtro) {
+        return List.of("Acción", "Aventura", "Plataformas", "RPG", "Shooter", "Estrategia").contains(filtro);
+    }
+
+    private boolean esPlataforma(String filtro) {
+        return List.of("PC", "Xbox", "PlayStation", "Nintendo").contains(filtro);
     }
 
     private void cargarYMostrarJuegos(List<String[]> juegos, HBox contenedor) {
@@ -154,111 +224,51 @@ public class HomeControlador {
         fondoBlur.setFitWidth(250);
         fondoBlur.setFitHeight(400);
         fondoBlur.setPreserveRatio(false);
-        fondoBlur.setEffect(new GaussianBlur(20)); // Aplicar efecto de desenfoque
+        fondoBlur.setEffect(new GaussianBlur(20));
 
-        // Portada del juego (imagen sin desenfoque)
+        // Portada del juego
         ImageView portada = new ImageView();
         portada.setFitWidth(220);
         portada.setFitHeight(220);
         portada.setPreserveRatio(true);
 
-        // Verifica si la URL de la imagen es válida
         String urlImagen = juego[2];
         if (urlImagen != null && !urlImagen.isEmpty() && urlImagen.startsWith("http")) {
             try {
                 Image imagen = new Image(urlImagen);
                 portada.setImage(imagen);
-                fondoBlur.setImage(imagen); // Usar la misma imagen para el fondo desenfocado
+                fondoBlur.setImage(imagen);
             } catch (IllegalArgumentException e) {
-                // Si la URL es inválida, carga una imagen predeterminada
                 Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
                 portada.setImage(imagenPredeterminada);
                 fondoBlur.setImage(imagenPredeterminada);
             }
-        } else {
-            // Si no hay URL, carga una imagen predeterminada
-            Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
-            portada.setImage(imagenPredeterminada);
-            fondoBlur.setImage(imagenPredeterminada);
         }
 
-        // Rectángulo negro para la información del juego
+        // Información del juego
         Rectangle rectanguloInfo = new Rectangle(250, 100, Color.BLACK);
-        rectanguloInfo.setTranslateY(150); // Posiciona el rectángulo en la parte inferior
+        rectanguloInfo.setTranslateY(150);
 
-        // Nombre y rating del juego
         Label nombre = new Label(juego[1]);
         nombre.getStyleClass().add("label-juego-nombre");
 
         Label rating = new Label("Rating: " + juego[3]);
         rating.getStyleClass().add("label-juego-rating");
 
-        // Contenedor para la información del juego
-        VBox infoBox = new VBox(5, nombre, rating); // Espaciado entre nombre y rating
+        VBox infoBox = new VBox(5, nombre, rating);
         infoBox.setAlignment(Pos.CENTER);
-        infoBox.setTranslateY(150); // Posiciona el VBox dentro del rectángulo negro
+        infoBox.setTranslateY(150);
 
-        // Añadir elementos al StackPane (el orden importa)
         juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
 
         return juegoBox;
     }
     
-    @FXML
-    private void irAHome(ActionEvent event) {
-        try {
-            // Cargar la vista de Home
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Home.fxml"));
-            Parent root = loader.load();
-
-            // Obtener la escena actual y cambiarla
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void setUsuario(Usuario usuario) {
+        if (usuario == null) {
+            System.out.println("ERROR: Usuario es null en DeseadosControlador.");
+            return;}
+        this.usuario = usuario;        
     }
-    
-    @FXML
-    private void aplicarFiltro(ActionEvent event) {
-        String filtroSeleccionado = filtroComboBox.getValue(); // Obtener el filtro seleccionado
-        String query = campoBusqueda.getText().trim(); // Obtener el texto de búsqueda
 
-        if (filtroSeleccionado != null && !query.isEmpty()) {
-            ConexionAPI conexionAPI = new ConexionAPI();
-            Service<List<String[]>> service = new Service<List<String[]>>() {
-                @Override
-                protected Task<List<String[]>> createTask() {
-                    return new Task<List<String[]>>() {
-                        @Override
-                        protected List<String[]> call() throws Exception {
-                            switch (filtroSeleccionado) {
-                                case "Plataforma":
-                                    return conexionAPI.buscarJuegosPorPlataforma(query);
-                                case "Género":
-                                    return conexionAPI.buscarJuegosPorGenero(query);
-                                case "Rating":
-                                    return conexionAPI.buscarJuegosPorRating(query);
-                                default:
-                                    return conexionAPI.buscarJuegosPorNombre(query);
-                            }
-                        }
-                    };
-                }
-            };
-
-            service.setOnSucceeded(event2 -> {
-                List<String[]> resultados = service.getValue();
-                contenedorJuegosBusqueda.getChildren().clear();
-                cargarYMostrarJuegos(resultados, contenedorJuegosBusqueda);
-                contenedorResultadosBusqueda.setVisible(true);
-            });
-
-            service.start();
-        } else {
-            contenedorResultadosBusqueda.setVisible(false);
-        }
-    }
 }
