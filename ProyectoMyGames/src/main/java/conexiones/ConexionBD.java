@@ -11,7 +11,7 @@ import model.Usuario;
  */
 public class ConexionBD {
 
-	private static final String URL = "jdbc:sqlite:src/resources/bd.db"; // Ajuste a la ubicación correcta de la BD
+    private static final String URL = "jdbc:sqlite:src/resources/bd.db"; // Ajuste a la ubicación correcta de la BD
 
     public Connection conectar() {
         Connection conexion = null;
@@ -64,7 +64,7 @@ public class ConexionBD {
      * @return Un array con la información del juego (id, nombre, imagen, rating) o null si no se encuentra.
      */
     public String[] obtenerJuegoPorId(String id) {
-        String query = "SELECT id, nombre, imagen, Calificacion FROM Juego WHERE id = ?";
+        String query = "SELECT Id, Nombre, Imagen, Calificacion FROM Juego WHERE id = ?";
         String[] juego = null;
 
         try (Connection conexion = conectar();
@@ -114,5 +114,35 @@ public class ConexionBD {
         }
         return juegos;
     }
+
+    /**
+     * Agrega un nuevo juego a la base de datos.
+     * 
+     * @param id ID del juego.
+     * @param nombre Nombre del juego.
+     * @param imagen URL de la imagen del juego.
+     * @param calificacion Calificación del juego.
+     * @return `true` si el juego fue agregado correctamente, `false` en caso de error.
+     */
+    public boolean agregarJuego(String id, String nombre, String imagen, String calificacion) {
+        String query = "INSERT INTO Juego (Id, Nombre, Calificacion, Imagen) VALUES (?, ?, ?, ?)";
+
+        try (Connection conexion = conectar();
+             PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
+
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, nombre);
+            preparedStatement.setString(3, imagen);
+            preparedStatement.setString(4, calificacion);
+
+            int filasAfectadas = preparedStatement.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
+
 
