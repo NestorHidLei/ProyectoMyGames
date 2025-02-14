@@ -21,7 +21,7 @@
 
         <!-- Contenedor para resultados de búsqueda -->
 		<VBox fx:id="contenedorResultadosBusqueda" alignment="TOP_CENTER" layoutY="540.0" prefWidth="1920.0" spacing="20.0" visible="false">
-		    <Label styleClass="section-title" text="RESULTADOS DE BÚSQUEDA" />
+		    <Label fx:id="resultado" styleClass="section-title" text="RESULTADOS DE BÚSQUEDA" />
 		    <ScrollPane fitToHeight="true" hbarPolicy="NEVER" pannable="true" prefHeight="420.0" styleClass="horizontal-scroll" vbarPolicy="NEVER">
 		        <content>
 		            <HBox fx:id="contenedorJuegosBusqueda" alignment="CENTER" spacing="30.0" />

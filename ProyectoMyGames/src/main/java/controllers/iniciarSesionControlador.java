@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -34,6 +35,8 @@ public class iniciarSesionControlador {
 	 */
 	@FXML
 	private TextField usernameField;
+	@FXML
+	private Label inicio;
 
 	/**
 	 * Campo de texto para que el usuario introduzca su contraseña.
@@ -58,7 +61,8 @@ public class iniciarSesionControlador {
 	 */
 	@FXML
 	private Hyperlink perdidaContrasena;
-
+	
+	private Alert alert;
 	/**
 	 * Inicializa los eventos asociados a los elementos de la interfaz. Este método
 	 * se llama automáticamente al cargar la vista FXML.
@@ -199,7 +203,7 @@ public class iniciarSesionControlador {
 	 * @param content   El contenido del mensaje de la alerta.
 	 */
 	private void showAlert(Alert.AlertType alertType, String title, String content) {
-		Alert alert = new Alert(alertType);
+		this.alert = new Alert(alertType);
 		alert.setTitle(title);
 		alert.setHeaderText(null);
 		alert.setContentText(content);
@@ -215,4 +219,7 @@ public class iniciarSesionControlador {
 	private void showInfo(String title, String content) {
 		showAlert(Alert.AlertType.INFORMATION, title, content);
 	}
+	public Alert getAlert() {
+    	return alert;
+    }
 }

@@ -90,6 +90,8 @@ public class HomeControlador extends Navegacion{
     private Button botonCuenta;
     
     private ConexionAPI conexionAPI = new ConexionAPI();
+    
+    private Label resultado;
 
     @FXML
     public void initialize() {

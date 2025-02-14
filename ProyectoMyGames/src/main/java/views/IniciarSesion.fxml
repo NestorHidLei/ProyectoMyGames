@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../styles/InicioSesion.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.iniciarSesionControlador">
     <children>
-            <Label layoutX="358.0" layoutY="180.0" styleClass="login-label" text="Login" />
+            <Label fx:id="inicio" layoutX="358.0" layoutY="180.0" styleClass="login-label" text="Login" />
             <ImageView fitHeight="193.0" fitWidth="228.0" layoutX="297.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@../images/persona1.png" />

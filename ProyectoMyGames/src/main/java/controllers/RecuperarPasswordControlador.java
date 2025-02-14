@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -58,6 +59,9 @@ public class RecuperarPasswordControlador {
      */
     @FXML
     private Button cancelarButton;
+    
+    private Label recuperarContrasena;
+    private Alert alert;
 
     /**
      * Inicializa los eventos asociados a los elementos de la interfaz.
@@ -190,10 +194,10 @@ public class RecuperarPasswordControlador {
      * @param mensaje El mensaje de la alerta.
      */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle(titulo);
-        alerta.setContentText(mensaje);
-        alerta.showAndWait();
+        this.alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
     /**
@@ -230,4 +234,8 @@ public class RecuperarPasswordControlador {
         stage.setScene(scene);
         stage.show();
     }
+
+	public Alert getAlert() {
+		return alert;
+	}
 }
