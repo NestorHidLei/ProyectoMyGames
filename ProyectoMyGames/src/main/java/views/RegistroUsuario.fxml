@@ -16,7 +16,7 @@
                    <Image url="@../images/persona1.png" />
                </image>
            </ImageView>
-           <Label layoutX="344.0" layoutY="180.0" styleClass="login-label" text="Registro" />
+           <Label fx:id="labelRegistro" layoutX="344.0" layoutY="180.0" styleClass="login-label" text="Registro" />
       <VBox layoutX="200.0" layoutY="475.0" spacing="15.0">
          <children>
                  <TextField fx:id="nombreField" promptText="NOMBRE" styleClass="input-field" />

@@ -1,4 +1,5 @@
 package test;
+
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
@@ -11,6 +12,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import controllers.RegistroUsuarioControlador;
+import controllers.iniciarSesionControlador;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -29,137 +31,153 @@ import org.testfx.api.FxRobot;
 class InicioSesiontest {
 	iniciarSesionControlador controlador = new iniciarSesionControlador();
 
-	private Label inicio;
-    private TextField nombreField;
-    private TextField apellidosField;
-    private TextField emailField;
-    private TextField registroUsernameField;
-    private PasswordField registroPasswordField;
-    private Button registrarButton;
-    private Button cancelarButton;
+	private Label labelRegistro;
+	private Label recuperarContrasena;
+	private TextField usernameField;
+	private PasswordField passwordField;
+	private Button loginButton;
+	private Hyperlink registro;
+	private Hyperlink perdidaContrasena;
+	private Label resultado;
 
-    @Start
-    private void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegistroUsuario.fxml"));
-      
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+	@Start
+	private void start(Stage stage) throws Exception {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/iniciarSesion.fxml"));
+
+		Parent root = loader.load();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
 		controlador = loader.getController();
- 
-    }
-    
-    @Order(1)
-    @Test
-    void testRegistrar(FxRobot robot) throws InterruptedException {
-        // Obtener elementos de la pantalla de registro
-        nombreField = (TextField) robot.lookup("#nombreField").query();
-        apellidosField = (TextField) robot.lookup("#apellidosField").query();
-        emailField = (TextField) robot.lookup("#emailField").query();
-        registroUsernameField = (TextField) robot.lookup("#usernameField").query();
-        registroPasswordField = (PasswordField) robot.lookup("#passwordField").query();
-        registrarButton = (Button) robot.lookup("#registrarButton").query();
-        Thread.sleep(2000);
-        // Simular entrada de datos de usuario nuevo
+
+	}
+
+	@Test
+	void testNavegacionRegistro(FxRobot robot) throws InterruptedException {
+		registro = (Hyperlink) robot.lookup("#registro").query();
+		robot.clickOn(registro);
+
+		Thread.sleep(2000);
+
+		labelRegistro = (Label) robot.lookup("#labelRegistro").query();
+		// Verificar que el Label "registroo" contiene "Registro"
+		assertEquals("Registro", labelRegistro.getText());
+	}
+
+	@Test
+	void testNavegacionRecuperar(FxRobot robot) throws InterruptedException {
+		perdidaContrasena = (Hyperlink) robot.lookup("#perdidaContrasena").query();
+		robot.clickOn(perdidaContrasena);
+
+		Thread.sleep(2000);
+
+		recuperarContrasena = (Label) robot.lookup("#recuperarContrasena").query();
+		// Verificar que el Label "registroo" contiene "Registro"
+		assertEquals("Recuperar Contraseña", recuperarContrasena.getText());
+	}
+
+	@Test
+	void testCamposVacio(FxRobot robot) throws InterruptedException {
+		usernameField = (TextField) robot.lookup("#usernameField").query();
+		passwordField = (PasswordField) robot.lookup("#passwordField").query();
+		loginButton = (Button) robot.lookup("#loginButton").query();
+        
+		robot.clickOn(loginButton);
+		
+		Alert alert = controlador.getAlert();
+        
+        assertEquals("Por favor, introduce tu usuario y contraseña.",alert.getContentText());
+	}
+	
+	@Test
+	void testContrasenaVacio(FxRobot robot) throws InterruptedException {
+		usernameField = (TextField) robot.lookup("#usernameField").query();
+		passwordField = (PasswordField) robot.lookup("#passwordField").query();
+		loginButton = (Button) robot.lookup("#loginButton").query();
+		
+		// Simular entrada de datos de usuario nuevo
         robot.interact(() -> {
-            nombreField.setText("Carlos");
-            apellidosField.setText("Gómez");
-            emailField.setText("carlosgomez@email.com");
-            registroUsernameField.setText("carlosg");
-            registroPasswordField.setText("password123");
+
+        	usernameField.setText("carlosg");
         });
-
-        // Simular clic en "Registrar"
-        robot.clickOn(registrarButton);
-        Thread.sleep(2000);
-        Alert alert = controlador.getAlert();
+		robot.clickOn(loginButton);
+		
+		Alert alert = controlador.getAlert();
         
-        assertEquals("El usuario se ha registrado con éxito.",alert.getContentText());
-        }
-
-   
-    @Test
-    void testRegistrarUsuarioYaInsertado(FxRobot robot) throws InterruptedException {
-        // Obtener elementos de la pantalla de registro
-        nombreField = (TextField) robot.lookup("#nombreField").query();
-        apellidosField = (TextField) robot.lookup("#apellidosField").query();
-        emailField = (TextField) robot.lookup("#emailField").query();
-        registroUsernameField = (TextField) robot.lookup("#usernameField").query();
-        registroPasswordField = (PasswordField) robot.lookup("#passwordField").query();
-        registrarButton = (Button) robot.lookup("#registrarButton").query();
-        Thread.sleep(2000);
-        // Simular entrada de datos de usuario nuevo
+        assertEquals("Por favor, introduce tu usuario y contraseña.",alert.getContentText());
+	}
+	
+	@Test
+	void testUsuairoVacio(FxRobot robot) throws InterruptedException {
+		usernameField = (TextField) robot.lookup("#usernameField").query();
+		passwordField = (PasswordField) robot.lookup("#passwordField").query();
+		loginButton = (Button) robot.lookup("#loginButton").query();
+		
+		// Simular entrada de datos de usuario nuevo
         robot.interact(() -> {
-            nombreField.setText("Carlos");
-            apellidosField.setText("Gómez");
-            emailField.setText("carlosgomez@email.com");
-            registroUsernameField.setText("carlosg");
-            registroPasswordField.setText("password123");
+
+        	passwordField.setText("carlosg");
         });
-
-        // Simular clic en "Registrar"
-        robot.clickOn(registrarButton);
-        Thread.sleep(2000);
-        Alert alert = controlador.getAlert();
+		robot.clickOn(loginButton);
+		
+		Alert alert = controlador.getAlert();
         
-        assertEquals("El usuario o correo ya existe. Intenta con otros.",alert.getContentText());
-        }
-
-    @Test
-    void testRegistrarConCamposVacios(FxRobot robot) throws InterruptedException {
-        // Obtener elementos de la pantalla de registro
-        nombreField = (TextField) robot.lookup("#nombreField").query();
-        apellidosField = (TextField) robot.lookup("#apellidosField").query();
-        emailField = (TextField) robot.lookup("#emailField").query();
-        registroUsernameField = (TextField) robot.lookup("#usernameField").query();
-        registroPasswordField = (PasswordField) robot.lookup("#passwordField").query();
-        registrarButton = (Button) robot.lookup("#registrarButton").query();
-        Thread.sleep(2000);
-
-        // Simular clic en "Registrar"
-        robot.clickOn(registrarButton);
-        Thread.sleep(2000);
-        Alert alert = controlador.getAlert();
-        
-        assertEquals("Por favor, completa todos los campos.",alert.getContentText());
-        }
-    
-    @Test
-    void testRegistrarConCampoVacio(FxRobot robot) throws InterruptedException {
-        // Obtener elementos de la pantalla de registro
-        nombreField = (TextField) robot.lookup("#nombreField").query();
-        apellidosField = (TextField) robot.lookup("#apellidosField").query();
-        emailField = (TextField) robot.lookup("#emailField").query();
-        registroUsernameField = (TextField) robot.lookup("#usernameField").query();
-        registroPasswordField = (PasswordField) robot.lookup("#passwordField").query();
-        registrarButton = (Button) robot.lookup("#registrarButton").query();
-        Thread.sleep(2000);
-        // Simular entrada de datos de usuario nuevo
+        assertEquals("Por favor, introduce tu usuario y contraseña.",alert.getContentText());
+	}
+	
+	@Test
+	void testUsuarioIncorrecto(FxRobot robot) throws InterruptedException {
+		usernameField = (TextField) robot.lookup("#usernameField").query();
+		passwordField = (PasswordField) robot.lookup("#passwordField").query();
+		loginButton = (Button) robot.lookup("#loginButton").query();
+		
+		// Simular entrada de datos de usuario nuevo
         robot.interact(() -> {
-            nombreField.setText("Carlos");
-            apellidosField.setText("Gómez");
-            emailField.setText("carlosgomez@email.com");
-            registroUsernameField.setText("carlosg");
-        });
-        
-        // Simular clic en "Registrar"
-        robot.clickOn(registrarButton);
-        Thread.sleep(2000);
-        Alert alert = controlador.getAlert();
-        
-        assertEquals("Por favor, completa todos los campos.",alert.getContentText());
-        }
-    
-    @Test
-    void testBotonCancelar (FxRobot robot) throws InterruptedException {
-    	cancelarButton = (Button) robot.lookup("#cancelarButton").query();
-    	robot.clickOn(cancelarButton);
 
-    	Thread.sleep(2000);
-    	inicio = (Label) robot.lookup("#inicio").query();
-        // Verificar que el Label "registroo" contiene "Registro"
-    	assertEquals("Login",inicio.getText());
-    }
-    
+        	usernameField.setText("sgrgsdfefs");
+        	passwordField.setText("carlosg");
+        });
+		robot.clickOn(loginButton);
+		
+		Alert alert = controlador.getAlert();
+        
+        assertEquals("Usuario o contraseña incorrectos.",alert.getContentText());
+	}
+	
+	@Test
+	void testContrasenaIncorrecta(FxRobot robot) throws InterruptedException {
+		usernameField = (TextField) robot.lookup("#usernameField").query();
+		passwordField = (PasswordField) robot.lookup("#passwordField").query();
+		loginButton = (Button) robot.lookup("#loginButton").query();
+		
+		// Simular entrada de datos de usuario nuevo
+        robot.interact(() -> {
+        	passwordField.setText("sgrgsdfefs");
+        	usernameField.setText("carlosg");
+        });
+		robot.clickOn(loginButton);
+		
+		Alert alert = controlador.getAlert();
+        
+        assertEquals("Usuario o contraseña incorrectos.",alert.getContentText());
+	}
+	
+	@Test
+	void testAcceso(FxRobot robot) throws InterruptedException {
+		usernameField = (TextField) robot.lookup("#usernameField").query();
+		passwordField = (PasswordField) robot.lookup("#passwordField").query();
+		loginButton = (Button) robot.lookup("#loginButton").query();
+		
+		
+		// Simular entrada de datos de usuario nuevo
+        robot.interact(() -> {
+        	passwordField.setText("password123");
+        	usernameField.setText("carlosg");
+        });
+		robot.clickOn(loginButton);
+		
+		resultado = (Label) robot.lookup("#resultado").query();
+        
+        assertEquals("RESULTADOS DE BÚSQUEDA",resultado.getText());
+	}
 }

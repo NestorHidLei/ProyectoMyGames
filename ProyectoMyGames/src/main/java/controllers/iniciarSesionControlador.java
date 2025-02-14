@@ -61,7 +61,8 @@ public class iniciarSesionControlador {
 	 */
 	@FXML
 	private Hyperlink perdidaContrasena;
-
+	
+	private Alert alert;
 	/**
 	 * Inicializa los eventos asociados a los elementos de la interfaz. Este método
 	 * se llama automáticamente al cargar la vista FXML.
@@ -202,7 +203,7 @@ public class iniciarSesionControlador {
 	 * @param content   El contenido del mensaje de la alerta.
 	 */
 	private void showAlert(Alert.AlertType alertType, String title, String content) {
-		Alert alert = new Alert(alertType);
+		this.alert = new Alert(alertType);
 		alert.setTitle(title);
 		alert.setHeaderText(null);
 		alert.setContentText(content);
@@ -218,4 +219,7 @@ public class iniciarSesionControlador {
 	private void showInfo(String title, String content) {
 		showAlert(Alert.AlertType.INFORMATION, title, content);
 	}
+	public Alert getAlert() {
+    	return alert;
+    }
 }

@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -72,6 +73,7 @@ public class RegistroUsuarioControlador {
     private Button cancelarButton;
     
     private Alert alert;
+    private Label labelRegistro;
 
     /**
      * Inicializa los eventos asociados a los elementos de la interfaz.
