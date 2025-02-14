@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,13 +77,14 @@ public class Usuario {
      */
     private List<String> convertirALista(String ids) {
         if (ids == null || ids.trim().isEmpty()) {
-            return List.of();
+            return new ArrayList<>(); // Retornar una lista modificable
         }
-        return Arrays.stream(ids.split(","))
-                     .map(String::trim)
-                     .filter(s -> s.matches("\\d+")) // Asegura que solo toma números
-                     .collect(Collectors.toList());
+        return new ArrayList<>(Arrays.stream(ids.split(","))
+                .map(String::trim)
+                .filter(s -> s.matches("\\d+")) // Asegura que solo toma números
+                .collect(Collectors.toList()));
     }
+
 
     // Getters y Setters
     public String getNombre() { return nombre; }
@@ -94,5 +96,5 @@ public class Usuario {
     public List<String> getJuegosBiblioteca() { return juegosBiblioteca; }
 
     public void setJuegosDeseados(String deseados) { this.juegosDeseados = convertirALista(deseados); }
-    public void setJuegosBiblioteca(String biblioteca) { this.juegosBiblioteca = convertirALista(biblioteca); }
+    public void setJuegosBiblioteca(List<String> biblioteca) { this.juegosBiblioteca = (biblioteca); }
 }

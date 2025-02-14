@@ -283,8 +283,9 @@ public class HomeControlador extends Navegacion{
 
                 // Obtener el controlador de la pantalla de detalles del juego
                 resena juegoControlador = loader.getController();
-                juegoControlador.setJuego(juego); // Pasar la información del juego
-
+                juegoControlador.inicializar(juego[0], usuario); // Pasar la información del juego
+                juegoControlador.setJuego(juego);
+                
                 // Cambiar la escena actual
                 Stage stage = (Stage) juegoBox.getScene().getWindow();
                 stage.setScene(new Scene(root));

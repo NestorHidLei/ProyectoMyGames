@@ -5,7 +5,10 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
@@ -15,9 +18,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
 import model.Usuario;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -96,7 +101,7 @@ public class DeseadosControlador extends Navegacion {
             if (juegos.isEmpty()) {
                 mostrarMensajeSinJuegos();
             } else {
-                mensajeNoJuegos.setText("Juegos en Biblioteca");
+                mensajeNoJuegos.setText("Juegos en Deseados");
                 contenedorResultadosBusqueda.setVisible(true);
                 cargarYMostrarJuegos(juegos);
             }
@@ -167,6 +172,27 @@ public class DeseadosControlador extends Navegacion {
         // Añadir elementos al StackPane
         juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
 
+     // Agregar evento de clic al StackPane
+        juegoBox.setOnMouseClicked(event -> {
+            try {
+                // Cargar la pantalla de detalles del juego
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Resena.fxml"));
+                Parent root = loader.load();
+
+                // Obtener el controlador de la pantalla de detalles del juego
+                resena juegoControlador = loader.getController();
+                juegoControlador.inicializar(juego[0], usuario); // Pasar la información del juego
+                juegoControlador.setJuego(juego);
+                
+                // Cambiar la escena actual
+                Stage stage = (Stage) juegoBox.getScene().getWindow();
+                stage.setScene(new Scene(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        
         return juegoBox;
     }
 
