@@ -30,6 +30,7 @@ import java.util.List;
 
 /**
  * Controlador para la sección de juegos deseados.
+ * Permite visualizar los juegos que el usuario ha marcado como favoritos o deseados.
  */
 public class DeseadosControlador extends Navegacion {
 
@@ -48,17 +49,25 @@ public class DeseadosControlador extends Navegacion {
     @FXML
     private Button inicio, biblioteca, user;
 
+    /**
+     * Inicializa la vista y configura los eventos de los botones de navegación.
+     */
     @FXML
     public void initialize() {
         mensajeNoJuegos.setVisible(true);
         mensajeNoJuegos.setText("Cargando juegos deseados...");
         contenedorResultadosBusqueda.setVisible(false);
-        
+
         inicio.setOnAction(event -> abrirInicio(event, usuario));
         biblioteca.setOnAction(event -> abrirBiblioteca(event, usuario));
         user.setOnAction(event -> abrirUser(event, usuario));
     }
 
+    /**
+     * Asigna el usuario autenticado y carga los juegos deseados desde la base de datos.
+     *
+     * @param usuario Usuario autenticado en la sesión.
+     */
     public void setUsuario(Usuario usuario) {
         if (usuario == null) {
             System.out.println("ERROR: Usuario es null en DeseadosControlador.");
@@ -69,6 +78,10 @@ public class DeseadosControlador extends Navegacion {
         cargarJuegosDeseados();
     }
 
+    /**
+     * Carga los juegos que el usuario ha marcado como deseados.
+     * Si no hay juegos, muestra un mensaje.
+     */
     private void cargarJuegosDeseados() {
         if (usuario == null || usuario.getJuegosDeseados() == null) {
             mostrarMensajeSinJuegos();
@@ -82,7 +95,7 @@ public class DeseadosControlador extends Navegacion {
             return;
         }
 
-        // Cargar juegos en segundo plano desde la base de datos
+        // Cargar los juegos desde la base de datos en un hilo secundario
         Service<List<String[]>> service = new Service<>() {
             @Override
             protected Task<List<String[]>> createTask() {
@@ -110,6 +123,9 @@ public class DeseadosControlador extends Navegacion {
         service.start();
     }
 
+    /**
+     * Muestra un mensaje indicando que no hay juegos en la lista de deseados.
+     */
     private void mostrarMensajeSinJuegos() {
         mensajeNoJuegos.setText("No se encontraron juegos en deseados");
         mensajeNoJuegos.setVisible(true);
@@ -117,6 +133,11 @@ public class DeseadosControlador extends Navegacion {
         contenedorJuegosBusqueda.getChildren().clear();
     }
 
+    /**
+     * Carga y muestra los juegos deseados en la interfaz de usuario.
+     *
+     * @param juegos Lista de juegos obtenidos de la base de datos.
+     */
     private void cargarYMostrarJuegos(List<String[]> juegos) {
         contenedorJuegosBusqueda.getChildren().clear();
         for (String[] juego : juegos) {
@@ -125,66 +146,66 @@ public class DeseadosControlador extends Navegacion {
         }
     }
 
+    /**
+     * Crea un elemento visual para mostrar un juego en la lista de deseados.
+     *
+     * @param juego Array con los datos del juego: ID, nombre, imagen y calificación.
+     * @return StackPane que representa el juego en la interfaz.
+     */
     private StackPane crearClipJuego(String[] juego) {
         StackPane juegoBox = new StackPane();
         juegoBox.getStyleClass().add("juego-box");
         juegoBox.setPrefSize(250, 400);
 
-     // Fondo desenfocado
+        // Fondo desenfocado
         ImageView fondoBlur = new ImageView();
         fondoBlur.setFitWidth(250);
         fondoBlur.setFitHeight(400);
         fondoBlur.setPreserveRatio(false);
         fondoBlur.setEffect(new GaussianBlur(20));
 
-        
+        // Portada del juego
         ImageView portada = new ImageView();
         String urlImagen = juego[2];
-		portada.setFitWidth(220);
-		portada.setFitHeight(220);
-		portada.setPreserveRatio(true);
+        portada.setFitWidth(220);
+        portada.setFitHeight(220);
+        portada.setPreserveRatio(true);
 
-        // Descargar la imagen en un hilo separado y actualizar en el hilo de JavaFX
+        // Descargar la imagen en un hilo separado
         new Thread(() -> {
             Image imagen = descargarImagen(urlImagen);
-            Platform.runLater(() -> portada.setImage(imagen));
-            Platform.runLater(() -> fondoBlur.setImage(imagen));
+            Platform.runLater(() -> {
+                portada.setImage(imagen);
+                fondoBlur.setImage(imagen);
+            });
         }).start();
 
-        
-
-     // Rectángulo negro para la información del juego
+        // Información del juego
         Rectangle rectanguloInfo = new Rectangle(250, 100, Color.BLACK);
         rectanguloInfo.setTranslateY(150);
 
-        // Nombre y rating del juego
         Label nombre = new Label(juego[1]);
         nombre.getStyleClass().add("label-juego-nombre");
 
         Label rating = new Label("Rating: " + juego[3]);
         rating.getStyleClass().add("label-juego-rating");
 
-        // Contenedor para la información del juego
         VBox infoBox = new VBox(5, nombre, rating);
         infoBox.setAlignment(Pos.CENTER);
         infoBox.setTranslateY(150);
 
-        // Añadir elementos al StackPane
+        // Agregar elementos al StackPane
         juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
 
-     // Agregar evento de clic al StackPane
+        // Evento de clic para abrir detalles del juego
         juegoBox.setOnMouseClicked(event -> {
             try {
-                // Cargar la pantalla de detalles del juego
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Juego.fxml"));
                 Parent root = loader.load();
-
-                // Obtener el controlador de la pantalla de detalles del juego
                 JuegoControlador juegoControlador = loader.getController();
-                juegoControlador.inicializar(juego[0], usuario); // Pasar la información del juego
+                juegoControlador.inicializar(juego[0], usuario);
                 juegoControlador.setJuego(juego);
-                
-                // Cambiar la escena actual
+
                 Stage stage = (Stage) juegoBox.getScene().getWindow();
                 stage.setScene(new Scene(root));
             } catch (IOException e) {
@@ -192,53 +213,45 @@ public class DeseadosControlador extends Navegacion {
             }
         });
 
-        
         return juegoBox;
     }
 
     /**
-     * Descarga una imagen desde la URL proporcionada.
-     * Si la URL no es válida o la imagen no se puede cargar, usa una imagen por defecto.
+     * Descarga una imagen desde una URL. Si la imagen no se puede cargar, usa una imagen por defecto.
+     *
+     * @param urlImagen URL de la imagen del juego.
+     * @return Objeto Image con la imagen descargada o la imagen por defecto.
      */
     private Image descargarImagen(String urlImagen) {
         if (urlImagen == null || urlImagen.isEmpty() || !urlImagen.startsWith("http")) {
-            System.out.println("URL de imagen inválida: " + urlImagen);
             return cargarImagenLocal("/images/logo.png");
         }
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(urlImagen).openConnection();
             connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000); // 5 segundos de espera
+            connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
-            connection.setDoInput(true);
             connection.connect();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                return new Image(inputStream);
-            } else {
-                System.out.println("No se pudo descargar la imagen: " + urlImagen);
+                return new Image(connection.getInputStream());
             }
         } catch (Exception e) {
             System.out.println("Error al descargar la imagen: " + urlImagen);
         }
 
-        // En caso de error, devolver la imagen por defecto
         return cargarImagenLocal("/images/logo.png");
     }
 
     /**
-     * Carga una imagen local como respaldo en caso de fallo con la URL.
+     * Carga una imagen local en caso de error al descargar una imagen.
+     *
+     * @param path Ruta del archivo de imagen local.
+     * @return Objeto Image con la imagen cargada.
      */
     private Image cargarImagenLocal(String path) {
         InputStream is = getClass().getResourceAsStream(path);
-        if (is != null) {
-            return new Image(is);
-        } else {
-            System.out.println("Imagen local no encontrada: " + path);
-            return null;
-        }
+        return (is != null) ? new Image(is) : null;
     }
 }
-

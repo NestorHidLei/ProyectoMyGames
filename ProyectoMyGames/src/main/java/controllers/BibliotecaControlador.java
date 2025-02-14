@@ -257,4 +257,3 @@ public class BibliotecaControlador extends Navegacion {
 	    }
 	
 	}
-
