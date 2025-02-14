@@ -1,6 +1,5 @@
 package controllers;
 
-
 import conexiones.ConexionBD;
 import conexiones.ConexionAPI;
 import javafx.fxml.FXML;
@@ -74,113 +73,105 @@ public class resena extends Navegacion{
     private Usuario usuario;
     private ConexionAPI conexionAPI = new ConexionAPI();
 
-
-    /**
-     * Método para inicializar la vista con los datos necesarios.
-     * @param juegoId ID del juego cuya reseña se va a cargar.
-     * @param usuario Usuario actual.
-     */
     public void inicializar(String juegoId, Usuario usuario) {
         this.conexionBD = new ConexionBD();
         this.juegoId = juegoId;
         this.usuario = usuario;
         cargarReseña();
         cargarBotones();
-        mandarBiblioteca.setOnAction(event -> guardarBiblioteca());
-        mandarDeseados.setOnAction(event -> modificarDeseados());
-        
-        
+
         publicar.setOnAction(event -> guardarReseña());
         modificar.setOnAction(event -> modificarReseña());
+
+        mandarBiblioteca.setOnAction(event -> toggleBiblioteca());
+        mandarDeseados.setOnAction(event -> toggleDeseados());
         
         inicio.setOnAction(event -> abrirInicio(event, usuario));
         biblioteca.setOnAction(event -> abrirBiblioteca(event, usuario));
         deseados.setOnAction(event -> abrirDeseados(event, usuario));
         user.setOnAction(event -> abrirUser(event, usuario));
+        
     }
 
-    /**
-     * Carga las opciones de biblioteca y de deseados
-     */
     private void cargarBotones() {
-    	List<String> biblioteca = usuario.getJuegosBiblioteca(); 
-    	List<String> deseados = usuario.getJuegosDeseados();
-    	
-    	if(biblioteca.contains(juegoId)) {
-    		mandarBiblioteca.setStyle("-fx-background-color: #3adb34");
-    	} else {
-    		mandarBiblioteca.setStyle("-fx-background-color: #c40404");
-    	}
-    	
-    	if(deseados.contains(juegoId)) {
-    		mandarDeseados.setStyle("-fx-background-color: #3adb34");
-    	} else {
-    		mandarDeseados.setStyle("-fx-background-color: #c40404");
-    	}
+        List<String> biblioteca = usuario.getJuegosBiblioteca();
+        List<String> deseados = usuario.getJuegosDeseados();
 
+        mandarBiblioteca.setStyle(biblioteca.contains(juegoId) ? "-fx-background-color: #3adb34" : "-fx-background-color: #c40404");
+        mandarDeseados.setStyle(deseados.contains(juegoId) ? "-fx-background-color: #3adb34" : "-fx-background-color: #c40404");
     }
-    
-    private void guardarBiblioteca() {
-    	
-        String queryExiste = "SELECT COUNT(*) FROM Reseña WHERE JuegoID = ? AND UsuarioID = ?";
-        String queryInsert = "INSERT INTO Reseña (JuegoID, UsuarioID, Texto) VALUES (?, ?, ?)";
-        String queryUpdate = "UPDATE Reseña SET Texto = ? WHERE JuegoID = ? AND UsuarioID = ?";
+
+    private void verificarYAgregarJuego(String[] juego) {
+        String[] juegoExistente = conexionBD.obtenerJuegoPorId(juego[0]);
+        
+        if (juegoExistente == null) { 
+            // Si el juego no existe en la base de datos, lo agregamos
+            boolean agregado = conexionBD.agregarJuego(juego[0], juego[1], juego[3], juego[2]);
+            if (!agregado) {
+                System.out.println("Error al agregar el juego a la base de datos.");
+            }
+        }
+    }
+
+    private void toggleBiblioteca() {
+        verificarYAgregarJuego(conexionAPI.buscarJuegoPorId(juegoId)); // Verifica y agrega si no existe
+
+        List<String> biblioteca = new ArrayList<>(usuario.getJuegosBiblioteca());
+
+        if (biblioteca.contains(juegoId)) {
+            biblioteca.remove(juegoId);
+        } else {
+            biblioteca.add(juegoId);
+        }
+
+        usuario.setJuegosBiblioteca(biblioteca);
+        actualizarUsuarioEnBD();
+        cargarBotones();
+    }
+
+    private void toggleDeseados() {
+        verificarYAgregarJuego(conexionAPI.buscarJuegoPorId(juegoId)); // Verifica y agrega si no existe
+
+        if (usuario.getJuegosDeseados().contains(juegoId)) {
+            usuario.getJuegosDeseados().remove(juegoId);
+        } else {
+            usuario.getJuegosDeseados().add(juegoId);
+        }
+        actualizarUsuarioEnBD();
+        cargarBotones();
+    }
+
+
+    private void actualizarUsuarioEnBD() {
+        String query = "UPDATE Usuario SET Deseados = ?, Biblioteca = ? WHERE usuario = ?";
+        String deseados = String.join(",", usuario.getJuegosDeseados());
+        System.out.println(deseados);
+        String biblioteca = String.join(",", usuario.getJuegosBiblioteca());
 
         try (Connection conexion = conexionBD.conectar();
-             PreparedStatement checkStmt = conexion.prepareStatement(queryExiste)) {
-
-            checkStmt.setString(1, juegoId);
-            checkStmt.setString(2, usuario.getUsername());
-
-            ResultSet resultSet = checkStmt.executeQuery();
-            boolean existeReseña = resultSet.next() && resultSet.getInt(1) > 0;
-
-            try (PreparedStatement stmt = conexion.prepareStatement(existeReseña ? queryUpdate : queryInsert)) {
-                if (existeReseña) {
-                    stmt.setString(1, nuevaReseña);
-                    stmt.setString(2, juegoId);
-                    stmt.setString(3, usuario.getUsername());
-                } else {
-                    stmt.setString(1, juegoId);
-                    stmt.setString(2, usuario.getUsername());
-                    stmt.setString(3, nuevaReseña);
-                }
-
-                int filasAfectadas = stmt.executeUpdate();
-                if (filasAfectadas > 0) {
-                    System.out.println("Reseña guardada exitosamente.");
-                    texto.setEditable(false);
-                    publicar.setDisable(true);
-                    modificar.setDisable(false);
-                }
-            }
+             PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
+            preparedStatement.setString(1, deseados);
+            preparedStatement.setString(2, biblioteca);
+            preparedStatement.setString(3, usuario.getUsername());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
-    /**
-     * Carga la reseña del usuario para el juego si existe.
-     */
+
     private void cargarReseña() {
         String query = "SELECT Texto FROM Reseña WHERE JuegoID = ? AND UsuarioID = ?";
-
         try (Connection conexion = conexionBD.conectar();
              PreparedStatement preparedStatement = conexion.prepareStatement(query)) {
-
             preparedStatement.setString(1, juegoId);
-            preparedStatement.setString(2, usuario.getUsername()); // Suponiendo que UsuarioID es el username
-
+            preparedStatement.setString(2, usuario.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
-                // Si ya existe una reseña, la mostramos y deshabilitamos edición
                 texto.setText(resultSet.getString("Texto"));
                 texto.setEditable(false);
                 publicar.setDisable(true);
                 modificar.setDisable(false);
             } else {
-                // Si no hay reseña, habilitamos la edición y el botón "Guardar"
                 texto.setText("");
                 texto.setEditable(true);
                 publicar.setDisable(false);
@@ -191,27 +182,15 @@ public class resena extends Navegacion{
         }
     }
 
-    /**
-     * Habilita la edición de la reseña para que pueda ser modificada.
-     */
-    @FXML
     private void modificarReseña() {
         texto.setEditable(true);
         publicar.setDisable(false);
         modificar.setDisable(true);
     }
 
-    /**
-     * Guarda o actualiza la reseña en la base de datos.
-     */
-    @FXML
     private void guardarReseña() {
         String nuevaReseña = texto.getText().trim();
-
-        if (nuevaReseña.isEmpty()) {
-            System.out.println("La reseña no puede estar vacía.");
-            return;
-        }
+        if (nuevaReseña.isEmpty()) return;
 
         String queryExiste = "SELECT COUNT(*) FROM Reseña WHERE JuegoID = ? AND UsuarioID = ?";
         String queryInsert = "INSERT INTO Reseña (JuegoID, UsuarioID, Texto) VALUES (?, ?, ?)";
@@ -219,10 +198,8 @@ public class resena extends Navegacion{
 
         try (Connection conexion = conexionBD.conectar();
              PreparedStatement checkStmt = conexion.prepareStatement(queryExiste)) {
-
             checkStmt.setString(1, juegoId);
             checkStmt.setString(2, usuario.getUsername());
-
             ResultSet resultSet = checkStmt.executeQuery();
             boolean existeReseña = resultSet.next() && resultSet.getInt(1) > 0;
 
@@ -236,14 +213,10 @@ public class resena extends Navegacion{
                     stmt.setString(2, usuario.getUsername());
                     stmt.setString(3, nuevaReseña);
                 }
-
-                int filasAfectadas = stmt.executeUpdate();
-                if (filasAfectadas > 0) {
-                    System.out.println("Reseña guardada exitosamente.");
-                    texto.setEditable(false);
-                    publicar.setDisable(true);
-                    modificar.setDisable(false);
-                }
+                stmt.executeUpdate();
+                texto.setEditable(false);
+                publicar.setDisable(true);
+                modificar.setDisable(false);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -319,3 +292,4 @@ public class resena extends Navegacion{
         }
     }
 }
+

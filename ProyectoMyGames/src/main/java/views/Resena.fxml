@@ -14,8 +14,8 @@
     
     <!-- Botones de navegación -->
     <Button fx:id="inicio" layoutX="14.0" layoutY="211.0" mnemonicParsing="false" opacity="0.0" prefHeight="71.0" prefWidth="204.0" styleClass="inicio" />
-    <Button fx:id="deseados" layoutX="438.0" layoutY="211.0" mnemonicParsing="false" opacity="0.0" prefHeight="71.0" prefWidth="317.0" styleClass="deseados" />
-    <Button fx:id="biblioteca" layoutX="942.0" layoutY="211.0" mnemonicParsing="false" opacity="0.0" prefHeight="71.0" prefWidth="340.0" styleClass="biblioteca" />
+    <Button fx:id="deseados" layoutX="972.0" layoutY="211.0" mnemonicParsing="false" opacity="0.0" prefHeight="71.0" prefWidth="317.0" styleClass="deseados" />
+    <Button fx:id="biblioteca" layoutX="421.0" layoutY="211.0" mnemonicParsing="false" opacity="0.0" prefHeight="71.0" prefWidth="340.0" styleClass="biblioteca" />
     <Button fx:id="user" layoutX="1507.0" layoutY="211.0" mnemonicParsing="false" opacity="0.0" prefHeight="71.0" prefWidth="270.0" styleClass="user" />
     
     <!-- Área de texto y botones de acción -->

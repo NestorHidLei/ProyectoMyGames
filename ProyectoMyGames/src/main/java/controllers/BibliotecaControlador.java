@@ -6,7 +6,10 @@ import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
@@ -16,9 +19,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
 import model.Usuario;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -54,7 +59,7 @@ public class BibliotecaControlador extends Navegacion {
 	    @FXML
 	    public void initialize() {
 	        mensajeNoJuegos.setVisible(true);
-	        mensajeNoJuegos.setText("Cargando juegos deseados...");
+	        mensajeNoJuegos.setText("Cargando juegos biblioteca...");
 	        contenedorResultadosBusqueda.setVisible(false);
 	        inicio.setOnAction(event -> abrirInicio(event, usuario));
 			deseados.setOnAction(event -> abrirDeseados(event, usuario));
@@ -66,26 +71,26 @@ public class BibliotecaControlador extends Navegacion {
 	     */
 	    public void setUsuario(Usuario usuario) {
 	        if (usuario == null) {
-	            System.out.println("ERROR: Usuario es null en DeseadosControlador.");
+	            System.out.println("ERROR: Usuario es null en bibliotecaControlador.");
 	            mensajeNoJuegos.setText("Error al cargar los juegos.");
 	            return;
 	        }
 	        this.usuario = usuario;
-	        cargarJuegosDeseados();
+	        cargarJuegosBiblioteca();
 	    }
 
 	    /**
 	     * Carga los juegos deseados del usuario y los muestra en el contenedor.
 	     */
-	    private void cargarJuegosDeseados() {
-	        if (usuario == null || usuario.getJuegosDeseados() == null) {
+	    private void cargarJuegosBiblioteca() {
+	        if (usuario == null || usuario.getJuegosBiblioteca() == null) {
 	            mostrarMensajeSinJuegos();
 	            return;
 	        }
 
-	        List<String> idsJuegosDeseados = usuario.getJuegosDeseados();
+	        List<String> getJuegosBiblioteca = usuario.getJuegosBiblioteca();
 
-	        if (idsJuegosDeseados.isEmpty()) {
+	        if (getJuegosBiblioteca.isEmpty()) {
 	            mostrarMensajeSinJuegos();
 	            return;
 	        }
@@ -97,7 +102,7 @@ public class BibliotecaControlador extends Navegacion {
 	                return new Task<>() {
 	                    @Override
 	                    protected List<String[]> call() {
-	                        return conexionBD.obtenerJuegosPorIds(idsJuegosDeseados);
+	                        return conexionBD.obtenerJuegosPorIds(getJuegosBiblioteca);
 	                    }
 	                };
 	            }
@@ -183,6 +188,26 @@ public class BibliotecaControlador extends Navegacion {
 
 	        // Añadir elementos al StackPane
 	        juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
+
+	     // Agregar evento de clic al StackPane
+	        juegoBox.setOnMouseClicked(event -> {
+	            try {
+	                // Cargar la pantalla de detalles del juego
+	                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Resena.fxml"));
+	                Parent root = loader.load();
+
+	                // Obtener el controlador de la pantalla de detalles del juego
+	                resena juegoControlador = loader.getController();
+	                juegoControlador.inicializar(juego[0], usuario); // Pasar la información del juego
+	                juegoControlador.setJuego(juego);
+	                
+	                // Cambiar la escena actual
+	                Stage stage = (Stage) juegoBox.getScene().getWindow();
+	                stage.setScene(new Scene(root));
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        });
 
 	        return juegoBox;
 	    }
