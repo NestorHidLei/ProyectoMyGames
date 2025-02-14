@@ -70,6 +70,14 @@ public class HomeControlador extends Navegacion{
     
     @FXML
     private Button botonInicio;
+    @FXML
+    private Button inicio;
+    @FXML
+    private Button biblioteca;
+    @FXML
+    private Button deseados;
+    @FXML
+    private Button user;
     
     private ConexionAPI conexionAPI = new ConexionAPI();
 
@@ -95,6 +103,10 @@ public class HomeControlador extends Navegacion{
         cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
         
         botonInicio.setOnAction(event -> abrirInicio(event, usuario));
+        inicio.setOnAction(event -> abrirInicio(event, usuario));
+        biblioteca.setOnAction(event -> abrirBiblioteca(event, usuario));
+        deseados.setOnAction(event -> abrirDeseados(event, usuario));
+        user.setOnAction(event -> abrirUser(event, usuario));
         
     }
 
