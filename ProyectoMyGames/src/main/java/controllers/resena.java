@@ -11,10 +11,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
  * Controlador para la pantalla de reseñas de juegos.
@@ -49,12 +55,20 @@ public class resena extends Navegacion{
     private Button user;
     
     @FXML
+    private Button mandarBiblioteca;
+    @FXML
+    private Button mandarDeseados;
+    
+    @FXML
     private TextArea descripcionJuego;
 
     @FXML
-    private HBox contenedorScreenshots;
-
-
+    private ImageView imagenJuegoSecundario;
+    
+    @FXML
+    private ImageView imagenJuego1;
+    
+    
     private ConexionBD conexionBD;
     private String juegoId;
     private Usuario usuario;
@@ -71,6 +85,11 @@ public class resena extends Navegacion{
         this.juegoId = juegoId;
         this.usuario = usuario;
         cargarReseña();
+        cargarBotones();
+        mandarBiblioteca.setOnAction(event -> guardarBiblioteca());
+        mandarDeseados.setOnAction(event -> modificarDeseados());
+        
+        
         publicar.setOnAction(event -> guardarReseña());
         modificar.setOnAction(event -> modificarReseña());
         
@@ -80,6 +99,66 @@ public class resena extends Navegacion{
         user.setOnAction(event -> abrirUser(event, usuario));
     }
 
+    /**
+     * Carga las opciones de biblioteca y de deseados
+     */
+    private void cargarBotones() {
+    	List<String> biblioteca = usuario.getJuegosBiblioteca(); 
+    	List<String> deseados = usuario.getJuegosDeseados();
+    	
+    	if(biblioteca.contains(juegoId)) {
+    		mandarBiblioteca.setStyle("-fx-background-color: #3adb34");
+    	} else {
+    		mandarBiblioteca.setStyle("-fx-background-color: #c40404");
+    	}
+    	
+    	if(deseados.contains(juegoId)) {
+    		mandarDeseados.setStyle("-fx-background-color: #3adb34");
+    	} else {
+    		mandarDeseados.setStyle("-fx-background-color: #c40404");
+    	}
+
+    }
+    
+    private void guardarBiblioteca() {
+    	
+        String queryExiste = "SELECT COUNT(*) FROM Reseña WHERE JuegoID = ? AND UsuarioID = ?";
+        String queryInsert = "INSERT INTO Reseña (JuegoID, UsuarioID, Texto) VALUES (?, ?, ?)";
+        String queryUpdate = "UPDATE Reseña SET Texto = ? WHERE JuegoID = ? AND UsuarioID = ?";
+
+        try (Connection conexion = conexionBD.conectar();
+             PreparedStatement checkStmt = conexion.prepareStatement(queryExiste)) {
+
+            checkStmt.setString(1, juegoId);
+            checkStmt.setString(2, usuario.getUsername());
+
+            ResultSet resultSet = checkStmt.executeQuery();
+            boolean existeReseña = resultSet.next() && resultSet.getInt(1) > 0;
+
+            try (PreparedStatement stmt = conexion.prepareStatement(existeReseña ? queryUpdate : queryInsert)) {
+                if (existeReseña) {
+                    stmt.setString(1, nuevaReseña);
+                    stmt.setString(2, juegoId);
+                    stmt.setString(3, usuario.getUsername());
+                } else {
+                    stmt.setString(1, juegoId);
+                    stmt.setString(2, usuario.getUsername());
+                    stmt.setString(3, nuevaReseña);
+                }
+
+                int filasAfectadas = stmt.executeUpdate();
+                if (filasAfectadas > 0) {
+                    System.out.println("Reseña guardada exitosamente.");
+                    texto.setEditable(false);
+                    publicar.setDisable(true);
+                    modificar.setDisable(false);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * Carga la reseña del usuario para el juego si existe.
      */
@@ -195,19 +274,47 @@ public class resena extends Navegacion{
                 imagenJuego.setImage(imagenPredeterminada);
             }
         }
-
+        
+        String urlImagen1 = datosJuegos[2];
+        if (urlImagen1 != null && !urlImagen1.isEmpty() && urlImagen1.startsWith("http")) {
+            try {
+                Image imagen = new Image(urlImagen1);
+                imagenJuego1.setImage(imagen);
+            } catch (IllegalArgumentException e) {
+                Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
+                imagenJuego1.setImage(imagenPredeterminada);
+            }
+        }
+        
         // Mostrar la descripción
-        descripcionJuego.setText(datosJuegos[8]);
+        Document document = Jsoup.parse(datosJuegos[8]);
 
-        // Mostrar los screenshots
-        String[] screenshots = datosJuegos[11].split(",");
-        for (String screenshotUrl : screenshots) {
-            if (screenshotUrl != null && !screenshotUrl.isEmpty()) {
-                ImageView screenshotView = new ImageView(new Image(screenshotUrl));
-                screenshotView.setFitWidth(200);
-                screenshotView.setFitHeight(150);
-                screenshotView.setPreserveRatio(true);
-                contenedorScreenshots.getChildren().add(screenshotView);
+        // Reemplazar <br> por saltos de línea
+        for (Element br : document.select("br")) {
+            br.after("\n");
+        }
+
+        // Reemplazar <p> por saltos de línea (para mayor claridad)
+        for (Element p : document.select("p")) {
+            p.prepend("\n");
+        }
+
+        // Convertir a texto plano
+        String plainText = document.text();
+        
+        descripcionJuego.setText(plainText);
+        
+        System.out.println("Screenshots recibidos: " + datosJuegos[11]);
+
+        // Cargar la imagen del juego
+        String urlImagenSecundaria = datosJuegos[11];
+        if (urlImagenSecundaria != null && !urlImagenSecundaria.isEmpty() && urlImagenSecundaria.startsWith("http")) {
+            try {
+                Image imagen = new Image(urlImagenSecundaria);
+                imagenJuegoSecundario.setImage(imagen);
+            } catch (IllegalArgumentException e) {
+                Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
+                imagenJuegoSecundario.setImage(imagenPredeterminada);
             }
         }
     }

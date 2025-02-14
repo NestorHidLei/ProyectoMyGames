@@ -124,22 +124,11 @@ public class ConexionAPI {
 						break;
 					}
 				}
-
-				// Screenshots
-				JsonArray screenshotsArray = juego.has("short_screenshots")
-						&& !juego.get("short_screenshots").isJsonNull() ? juego.getAsJsonArray("short_screenshots")
-								: new JsonArray();
-				StringBuilder screenshotsBuilder = new StringBuilder();
-				for (int i = 0; i < screenshotsArray.size(); i++) {
-					JsonObject screenshot = screenshotsArray.get(i).getAsJsonObject();
-					String screenshotUrl = screenshot.has("image") ? screenshot.get("image").getAsString() : null;
-					if (screenshotUrl != null) {
-						screenshotsBuilder.append(screenshotUrl).append(",");
-					}
-				}
-				String screenshots = screenshotsBuilder.length() > 0
-						? screenshotsBuilder.substring(0, screenshotsBuilder.length() - 1)
-						: "";
+				
+				String screenshotsArray = juego.has("background_image_additional") && !juego.get("background_image_additional").isJsonNull()
+						? juego.get("background_image_additional").getAsString()
+						: "No disponible";
+								
 
 				// Devolver un array con toda la información
 				return new String[] { id, // 0: ID
@@ -153,7 +142,7 @@ public class ConexionAPI {
 						descripcion, // 8: Descripción
 						requisitosMinimos, // 9: Requisitos mínimos
 						requisitosRecomendados, // 10: Requisitos recomendados
-						screenshots // 11: Screenshots
+						screenshotsArray // 11: Screenshots
 				};
 			} else {
 				System.err.println("Error en la solicitud: " + respuesta.code());

@@ -82,7 +82,7 @@
 	  <Button fx:id="botonInicio" layoutX="14.0" layoutY="64.0" opacity="0.0" prefHeight="82.0" prefWidth="285.0" textFill="TRANSPARENT" />
 	  <Button fx:id="botonInicio" layoutX="1709.0" opacity="0.0" prefHeight="197.0" prefWidth="208.0" textFill="TRANSPARENT" />
 	        <Button fx:id="inicio" layoutX="16.0" layoutY="212.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="204.0" styleClass="inicio" />
-        <Button  fx:id="deseados" layoutX="438.0" layoutY="212.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="317.0" styleClass="deseados" />
+        <Button fx:id="deseados" layoutX="438.0" layoutY="212.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="317.0" styleClass="deseados" />
         <Button fx:id="biblioteca" layoutX="960.0" layoutY="212.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="340.0" styleClass="biblioteca" />
         <Button fx:id="user" layoutX="1499.0" layoutY="212.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="270.0" styleClass="user" />
 	    <!-- ComboBox para seleccionar el filtro -->
@@ -90,8 +90,8 @@
 		<ComboBox fx:id="filtroComboBoxPlataforma" layoutX="1376.0" layoutY="411.0" promptText="Filtrar por..." />
 
 		<Button fx:id="botonFiltrar" layoutX="1719.0" layoutY="411.0" onAction="#aplicarFiltro" styleClass="search-button" text="Filtrar" />
-      <Button fx:id="botonBiblioteca" layoutX="440.0" layoutY="207.0" opacity="0.0" prefHeight="82.0" prefWidth="303.0" textFill="TRANSPARENT" />
-      <Button fx:id="botonDeseados" layoutX="960.0" layoutY="207.0" opacity="0.0" prefHeight="82.0" prefWidth="327.0" textFill="TRANSPARENT" />
+      <Button fx:id="botonBiblioteca" layoutX="960.0" layoutY="207.0" opacity="0.0" prefHeight="82.0" prefWidth="340.0" textFill="TRANSPARENT" />
+      <Button fx:id="botonDeseados" layoutX="433.0" layoutY="207.0" opacity="0.0" prefHeight="82.0" prefWidth="327.0" textFill="TRANSPARENT" />
       <Button fx:id="botonCuenta" layoutX="1516.0" layoutY="207.0" opacity="0.0" prefHeight="82.0" prefWidth="285.0" textFill="TRANSPARENT" />
     </children>
 </AnchorPane>
