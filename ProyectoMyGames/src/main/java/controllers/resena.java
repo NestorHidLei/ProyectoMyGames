@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Controlador para la pantalla de reseñas de juegos.
@@ -24,6 +27,15 @@ public class resena {
     
     @FXML
     private Button publicar;
+    
+    @FXML
+    private ImageView imagenJuego;
+
+    @FXML
+    private Label nombreJuego;
+
+    @FXML
+    private Label ratingJuego;
 
     private ConexionBD conexionBD;
     private String juegoId;
@@ -131,6 +143,28 @@ public class resena {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Setea el juego en la pantalla
+     * @param juego
+     */
+    public void setJuego(String[] juego) {
+        // Mostrar la información del juego en la pantalla
+        nombreJuego.setText(juego[1]);
+        ratingJuego.setText("Rating: " + juego[3]);
+
+        // Cargar la imagen del juego
+        String urlImagen = juego[2];
+        if (urlImagen != null && !urlImagen.isEmpty() && urlImagen.startsWith("http")) {
+            try {
+                Image imagen = new Image(urlImagen);
+                imagenJuego.setImage(imagen);
+            } catch (IllegalArgumentException e) {
+                Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
+                imagenJuego.setImage(imagenPredeterminada);
+            }
         }
     }
 }
