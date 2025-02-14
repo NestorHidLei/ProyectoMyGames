@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.util.List;
 import conexiones.ConexionAPI;
 import javafx.collections.FXCollections;
@@ -71,6 +72,15 @@ public class HomeControlador extends Navegacion{
     @FXML
     private Button botonInicio;
     
+    @FXML
+    private Button botonBiblioteca;
+   
+    @FXML
+    private Button botonDeseados;
+    
+    @FXML
+    private Button botonCuenta;
+    
     private ConexionAPI conexionAPI = new ConexionAPI();
 
     @FXML
@@ -95,6 +105,9 @@ public class HomeControlador extends Navegacion{
         cargarJuegosEnSegundoPlano(conexionAPI.obtenerJuegosSingleplayer(), contenedorJuegosSingleplayer);
         
         botonInicio.setOnAction(event -> abrirInicio(event, usuario));
+        botonBiblioteca.setOnAction(event -> abrirBiblioteca(event, usuario));
+        botonDeseados.setOnAction(event -> abrirDeseados(event, usuario));
+        botonCuenta.setOnAction(event -> abrirUser(event, usuario));
         
     }
 
@@ -260,6 +273,25 @@ public class HomeControlador extends Navegacion{
         infoBox.setTranslateY(150);
 
         juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
+
+        // Agregar evento de clic al StackPane
+        juegoBox.setOnMouseClicked(event -> {
+            try {
+                // Cargar la pantalla de detalles del juego
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Resena.fxml"));
+                Parent root = loader.load();
+
+                // Obtener el controlador de la pantalla de detalles del juego
+                resena juegoControlador = loader.getController();
+                juegoControlador.setJuego(juego); // Pasar la información del juego
+
+                // Cambiar la escena actual
+                Stage stage = (Stage) juegoBox.getScene().getWindow();
+                stage.setScene(new Scene(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         return juegoBox;
     }
