@@ -2,6 +2,7 @@ package controllers;
 
 
 import conexiones.ConexionBD;
+import conexiones.ConexionAPI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -13,11 +14,12 @@ import java.sql.SQLException;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 /**
  * Controlador para la pantalla de reseñas de juegos.
  */
-public class resena {
+public class resena extends Navegacion{
 
     @FXML
     private TextArea texto;
@@ -36,10 +38,28 @@ public class resena {
 
     @FXML
     private Label ratingJuego;
+    
+    @FXML
+    private Button inicio;
+    @FXML
+    private Button biblioteca;
+    @FXML
+    private Button deseados;
+    @FXML
+    private Button user;
+    
+    @FXML
+    private TextArea descripcionJuego;
+
+    @FXML
+    private HBox contenedorScreenshots;
+
 
     private ConexionBD conexionBD;
     private String juegoId;
     private Usuario usuario;
+    private ConexionAPI conexionAPI = new ConexionAPI();
+
 
     /**
      * Método para inicializar la vista con los datos necesarios.
@@ -53,6 +73,11 @@ public class resena {
         cargarReseña();
         publicar.setOnAction(event -> guardarReseña());
         modificar.setOnAction(event -> modificarReseña());
+        
+        inicio.setOnAction(event -> abrirInicio(event, usuario));
+        biblioteca.setOnAction(event -> abrirBiblioteca(event, usuario));
+        deseados.setOnAction(event -> abrirDeseados(event, usuario));
+        user.setOnAction(event -> abrirUser(event, usuario));
     }
 
     /**
@@ -151,12 +176,16 @@ public class resena {
      * @param juego
      */
     public void setJuego(String[] juego) {
-        // Mostrar la información del juego en la pantalla
-        nombreJuego.setText(juego[1]);
-        ratingJuego.setText("Rating: " + juego[3]);
+    	String[] datosJuegos = conexionAPI.buscarJuegoPorId(juego[0]);
+    	for (int i = 0; i < datosJuegos.length; i++) {
+			System.out.println(datosJuegos[i]);
+		}
+        // Mostrar la información básica del juego
+        nombreJuego.setText(datosJuegos[1]);
+        ratingJuego.setText("Rating: " + datosJuegos[3]);
 
         // Cargar la imagen del juego
-        String urlImagen = juego[2];
+        String urlImagen = datosJuegos[2];
         if (urlImagen != null && !urlImagen.isEmpty() && urlImagen.startsWith("http")) {
             try {
                 Image imagen = new Image(urlImagen);
@@ -164,6 +193,21 @@ public class resena {
             } catch (IllegalArgumentException e) {
                 Image imagenPredeterminada = new Image(getClass().getResourceAsStream("/images/logo.png"));
                 imagenJuego.setImage(imagenPredeterminada);
+            }
+        }
+
+        // Mostrar la descripción
+        descripcionJuego.setText(datosJuegos[8]);
+
+        // Mostrar los screenshots
+        String[] screenshots = datosJuegos[11].split(",");
+        for (String screenshotUrl : screenshots) {
+            if (screenshotUrl != null && !screenshotUrl.isEmpty()) {
+                ImageView screenshotView = new ImageView(new Image(screenshotUrl));
+                screenshotView.setFitWidth(200);
+                screenshotView.setFitHeight(150);
+                screenshotView.setPreserveRatio(true);
+                contenedorScreenshots.getChildren().add(screenshotView);
             }
         }
     }

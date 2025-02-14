@@ -1,0 +1,105 @@
+/* Juego.css */
+.background {
+    -fx-background-image: url("../images/fondo.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+.juego-nombre {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.7), 5, 0, 0, 1);
+}
+
+.juego-rating {
+    -fx-font-size: 24px;
+    -fx-text-fill: #6a5acd;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 3, 0, 0, 1);
+}
+
+.juego-detalle {
+    -fx-font-size: 16px;
+    -fx-text-fill: #a0a0a0;
+}
+
+.juego-descripcion {
+    -fx-font-size: 14px;
+    -fx-text-fill: #a0a0a0;
+    -fx-background-color: transparent;
+    -fx-border-color: #4a4a6a;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+.section-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 10px 0;
+}
+
+.horizontal-scroll {
+	-fx-fit-to-width: true;
+	 -fx-fit-to-height: true;
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+/* Estilos para los botones */
+.inicio, .deseados, .biblioteca, .user {
+    -fx-background-color: #4CAF50; /* Verde */
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+.inicio:hover, .deseados:hover, .biblioteca:hover, .user:hover {
+    -fx-background-color: #45a049; /* Verde más oscuro al pasar el ratón */
+}
+
+.inicio:pressed, .deseados:pressed, .biblioteca:pressed, .user:pressed {
+    -fx-background-color: #3d8b40; /* Verde aún más oscuro al presionar */
+}
+
+/* Estilos para el TextArea */
+.text-area {
+    -fx-background-color: #fff;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.text-area:focused {
+    -fx-border-color: #4CAF50; /* Borde verde cuando está enfocado */
+}
+
+/* Estilos para los botones de modificar y publicar */
+#modificar, #publicar {
+    -fx-background-color: #008CBA; /* Azul */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 1);
+}
+
+#modificar:hover, #publicar:hover {
+    -fx-background-color: #007B9E; /* Azul más oscuro al pasar el ratón */
+}
+
+#modificar:pressed, #publicar:pressed {
+    -fx-background-color: #006987; /* Azul aún más oscuro al presionar */
+}
