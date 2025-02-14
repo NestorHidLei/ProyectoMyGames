@@ -278,11 +278,11 @@ public class HomeControlador extends Navegacion{
         juegoBox.setOnMouseClicked(event -> {
             try {
                 // Cargar la pantalla de detalles del juego
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Resena.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Juego.fxml"));
                 Parent root = loader.load();
 
                 // Obtener el controlador de la pantalla de detalles del juego
-                resena juegoControlador = loader.getController();
+                JuegoControlador juegoControlador = loader.getController();
                 juegoControlador.inicializar(juego[0], usuario); // Pasar la información del juego
                 juegoControlador.setJuego(juego);
                 

@@ -24,7 +24,7 @@ import org.jsoup.nodes.Element;
 /**
  * Controlador para la pantalla de reseñas de juegos.
  */
-public class resena extends Navegacion{
+public class JuegoControlador extends Navegacion{
 
     @FXML
     private TextArea texto;
