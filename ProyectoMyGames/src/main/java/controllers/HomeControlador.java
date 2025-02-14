@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.io.IOException;
 import java.util.List;
 import conexiones.ConexionAPI;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.GaussianBlur;
@@ -19,7 +21,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Usuario;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -237,6 +242,25 @@ public class HomeControlador extends Navegacion {
         infoBox.setTranslateY(150);
 
         juegoBox.getChildren().addAll(fondoBlur, portada, rectanguloInfo, infoBox);
+        // Agregar evento de clic al StackPane
+        juegoBox.setOnMouseClicked(event -> {
+            try {
+                // Cargar la pantalla de detalles del juego
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../views/Juego.fxml"));
+                Parent root = loader.load();
+
+                // Obtener el controlador de la pantalla de detalles del juego
+                JuegoControlador juegoControlador = loader.getController();
+                juegoControlador.inicializar(juego[0], usuario); // Pasar la información del juego
+                juegoControlador.setJuego(juego);
+                
+                // Cambiar la escena actual
+                Stage stage = (Stage) juegoBox.getScene().getWindow();
+                stage.setScene(new Scene(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         return juegoBox;
     }
