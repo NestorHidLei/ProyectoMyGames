@@ -12,11 +12,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
 /**
@@ -69,6 +71,9 @@ public class RegistroUsuarioControlador {
      */
     @FXML
     private Button cancelarButton;
+    
+    private Alert alert;
+    private Label labelRegistro;
 
     /**
      * Inicializa los eventos asociados a los elementos de la interfaz.
@@ -163,11 +168,17 @@ public class RegistroUsuarioControlador {
      * @param mensaje El mensaje de la alerta.
      */
     private void mostrarAlerta(AlertType tipo, String titulo, String mensaje) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
+        Platform.runLater(() -> {
+            this.alert = new Alert(tipo);
+            alert.setTitle(titulo);
+            alert.setHeaderText(null);
+            alert.setContentText(mensaje);
+            alert.showAndWait();
+        });
+    }
+    
+    public Alert getAlert() {
+    	return alert;
     }
 
     /**
